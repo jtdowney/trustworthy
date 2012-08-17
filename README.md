@@ -1,4 +1,4 @@
-## Trustworthy
+## Trustworthy [![Build Status](https://secure.travis-ci.org/jtdowney/trustworthy.png?branch=master)](http://travis-ci.org/jtdowney/trustworthy)
 
 Implements a special case (k = 2) of [Adi Shamir's](http://en.wikipedia.org/wiki/Adi_Shamir) [secret sharing algorithm](http://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing). This allows secret files to be encrypted on disk but loaded into a process on start if two of the keys are available.
 
