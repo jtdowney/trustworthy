@@ -4,6 +4,9 @@ require 'trustworthy'
 
 RSpec.configure do |config|
   config.order = 'random'
+  config.before(:each) do
+    Trustworthy::Random.stub(:_source).and_return('/dev/urandom')
+  end
 end
 
 module Trustworthy

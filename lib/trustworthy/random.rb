@@ -9,9 +9,13 @@ module Trustworthy
     def self.bytes(size = 32)
       flags = File::RDONLY
       flags |= File::NOCTTY if defined? File::NOCTTY
-      File.open('/dev/random', flags) do |file|
+      File.open(_source, flags) do |file|
         file.read(size)
       end
+    end
+
+    def self._source
+      '/dev/random'
     end
   end
 end
