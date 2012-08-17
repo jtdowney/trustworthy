@@ -1,0 +1,145 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'commander/import'
+require 'trustworthy'
+
+program :version, Trustworthy::VERSION
+program :description, 'Trustworthy secret sharing'
+
+command 'init' do |c|
+  c.syntax = 'trustworthy init [options]'
+  c.summary = 'Create a new master key'
+  c.description = 'Used to generate a setup a new master key for trustworthy'
+  c.example 'create a new master key named foo', 'trustworthy init -c foo.yml'
+  c.option '-k', '--keys NUMBER', Integer, 'Initial number of keys to create (must be 2 or more, defaults to 2)'
+  c.option '-c', '--config FILE', String, 'Configuration file'
+  c.action do |args, options|
+    options.default :keys => 2
+
+    raise Commander::Runner::InvalidCommandError.new('Must provide a config file') unless options.config
+    raise Commander::Runner::InvalidCommandError.new('Cannot generate fewer than two sub-keys') if options.keys < 2
+
+    say "Creating a new master key with #{options.keys} sub-keys."
+
+    master_key = Trustworthy::MasterKey.create
+    settings = Trustworthy::Settings.new
+
+    options.keys.times do
+      add_user_key(settings, master_key)
+    end
+
+    settings.write(options.config)
+    say "Created #{options.config}"
+  end
+end
+
+command 'add-user' do |c|
+  c.syntax = 'trustworthy add-user [options]'
+  c.summary = 'Add a new user sub-key'
+  c.description = 'Load the master key and create a new user sub-key for it.'
+  c.example 'add a new user the master key', 'trustworthy add-key -c foo.yml'
+  c.option '-k', '--keys NUMBER', Integer, 'Number of keys to create'
+  c.option '-c', '--config FILE', String, 'Configuration file'
+  c.action do |args, options|
+    options.default :keys => 1
+
+    raise Commander::Runner::InvalidCommandError.new('Must provide a config file') unless options.config
+    raise Commander::Runner::InvalidCommandError.new('Cannot generate fewer than one key') if options.keys < 1
+
+    settings = Trustworthy::Settings.load(options.config)
+    master_key = load_master_key(settings)
+
+    options.keys.times do
+      add_user_key(settings, master_key)
+    end
+
+    settings.write(options.config)
+    say "Updated #{options.config} with #{options.keys} new key(s)"
+  end
+end
+
+command 'add-secret' do |c|
+  c.syntax = 'trustworthy add-secret [options]'
+  c.summary = 'Add a new secret'
+  c.description = 'Loads the master key and uses it to encrypt a new secret.'
+  c.example 'add a new secret with master key', 'trustworthy add-secret -c foo.yml -e ENCRYPTION_KEY -i encryption.key -o encryption.key.tw'
+  c.option '-e', '--environment ENVIRONMENT', 'Environment variable to store secret in when running exec'
+  c.option '-i', '--input FILE', 'File to be encrypted'
+  c.option '-o', '--output FILE', 'Encrypted output file'
+  c.option '-c', '--config FILE', String, 'Configuration file'
+  c.action do |args, options|
+    raise Commander::Runner::InvalidCommandError.new('Must provide a config file') unless options.config
+    raise Commander::Runner::InvalidCommandError.new('Must provide an environment variable') unless options.environment
+    raise Commander::Runner::InvalidCommandError.new('Must provide an input file') unless options.input
+    raise Commander::Runner::InvalidCommandError.new('Must provide an output file') unless options.output
+
+    settings = Trustworthy::Settings.load(options.config)
+    master_key = load_master_key(settings)
+
+    plaintext = File.read(options.input)
+    ciphertext = master_key.encrypt(plaintext)
+
+    File.open(options.output, 'w') do |file|
+      file.write(ciphertext)
+    end
+
+    settings.add_secret(options.environment, options.output)
+    settings.write(options.config)
+    say "Updated #{options.config} with the #{options.environment} secret"
+  end
+end
+
+command 'exec' do |c|
+  c.syntax = 'trustworthy exec -c [config file] program'
+  c.summary = 'Load secrets and run program'
+  c.description = 'Loads and decrypted all secrets with the master key and stores them in the environment before forking program'
+  c.example 'run rails console', 'trustworthy -c foo.yml rails console'
+  c.option '-c', '--config FILE', String, 'Configuration file'
+  c.action do |args, options|
+    raise Commander::Runner::InvalidCommandError.new('Must provide a config file') unless options.config
+
+    settings = Trustworthy::Settings.load(options.config)
+    master_key = load_master_key(settings)
+
+    environment = {}
+    settings.secrets.each do |key, encrypted_file|
+      ciphertext = File.read(encrypted_file)
+      environment[key] = master_key.decrypt(ciphertext)
+    end
+
+    pid = POSIX::Spawn.spawn(environment, *args)
+    Process.waitpid(pid)
+  end
+end
+
+def load_master_key(settings)
+  keys = []
+  2.times do
+    username = ask('Username: ')
+    password = password('Password: ', '')
+    keys << settings.unlock_key(username, password)
+    say "Unlocked key for #{username}."
+  end
+
+  Trustworthy::MasterKey.create_from_keys(*keys)
+end
+
+def add_user_key(settings, master_key)
+  key = master_key.create_key
+  username = ask('Username: ').to_s
+
+  password = nil
+  loop do
+    password = password('Password: ', '')
+    password_confirm = password('Password (again): ', '')
+    if password == password_confirm
+      break
+    else
+      say_error 'Password mismatch'
+    end
+  end
+
+  settings.add_key(key, username, password)
+  say "User #{username} added."
+end
