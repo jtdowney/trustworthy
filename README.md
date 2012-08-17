@@ -30,6 +30,6 @@ The master key will be loaded so all secrets can be decrypted and stored in the 
 
 ### Reference
 
-RSA Labs - [http://www.rsa.com/rsalabs/node.asp?id=2259](http://www.rsa.com/rsalabs/node.asp?id=2259)
-ssss - [http://point-at-infinity.org/ssss/](http://point-at-infinity.org/ssss/)
-Secret sharing on Wikipedia - [http://en.wikipedia.org/wiki/Secret_sharing](http://en.wikipedia.org/wiki/Secret_sharing)
+* RSA Labs - [http://www.rsa.com/rsalabs/node.asp?id=2259](http://www.rsa.com/rsalabs/node.asp?id=2259)
+* ssss - [http://point-at-infinity.org/ssss/](http://point-at-infinity.org/ssss/)* 
+* Secret sharing on Wikipedia - [http://en.wikipedia.org/wiki/Secret_sharing](http://en.wikipedia.org/wiki/Secret_sharing)
