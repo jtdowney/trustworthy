@@ -2,7 +2,7 @@
 
 Implements a special case (k = 2) of [Adi Shamir's](http://en.wikipedia.org/wiki/Adi_Shamir) [secret sharing algorithm](http://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing). This allows secret files to be encrypted on disk but loaded into a process on start if two of the keys are available.
 
-## Uses
+## Usage
 
 ### Generate a new master key
 
@@ -33,3 +33,7 @@ The master key will be loaded so all secrets can be decrypted and stored in the 
 * RSA Labs - [http://www.rsa.com/rsalabs/node.asp?id=2259](http://www.rsa.com/rsalabs/node.asp?id=2259)
 * ssss - [http://point-at-infinity.org/ssss/](http://point-at-infinity.org/ssss/)
 * Secret sharing on Wikipedia - [http://en.wikipedia.org/wiki/Secret_sharing](http://en.wikipedia.org/wiki/Secret_sharing)
+
+## License
+
+Trustworthy is released under the [MIT license](http://www.opensource.org/licenses/MIT).
