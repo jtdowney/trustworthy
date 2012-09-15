@@ -19,8 +19,8 @@ module Trustworthy
 
       @keys[username] = {
         :salt => salt,
-        :ciphertext => ciphertext,
-        :authentication => crypto.sign(ciphertext)
+        :encrypted_point => ciphertext,
+        :encrypted_point_signature => crypto.sign(ciphertext)
       }
     end
 
@@ -30,8 +30,8 @@ module Trustworthy
 
     def unlock_key(username, password)
       key_data = keys[username]
-      ciphertext = key_data[:ciphertext]
-      signature = key_data[:authentication]
+      ciphertext = key_data[:encrypted_point]
+      signature = key_data[:encrypted_point_signature]
       salt = key_data[:salt]
 
       crypto = _crypto_from_password(salt, password)

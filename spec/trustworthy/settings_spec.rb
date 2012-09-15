@@ -20,8 +20,8 @@ describe Trustworthy::Settings do
       key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
       @settings.add_key(key, 'user', 'password1')
       @settings.keys['user'][:salt].should == '400$8$1b$3e31f076a3226825'
-      @settings.keys['user'][:authentication].should == ['20c274efc68a460568853cc4be586183012769a312549d1aa57e29a36ec1503d'].pack('H*')
-      @settings.keys['user'][:ciphertext].should == ['39164ec082fb8b7336d3c5500af99dcb17d2e60496ed553dfab4b05c568aa926'].pack('H*')
+      @settings.keys['user'][:encrypted_point_signature].should == ['20c274efc68a460568853cc4be586183012769a312549d1aa57e29a36ec1503d'].pack('H*')
+      @settings.keys['user'][:encrypted_point].should == ['39164ec082fb8b7336d3c5500af99dcb17d2e60496ed553dfab4b05c568aa926'].pack('H*')
     end
   end
 
@@ -52,8 +52,8 @@ describe Trustworthy::Settings do
       store = YAML::Store.new(@filename)
       store.transaction do
         store[:keys]['user'][:salt].should == '400$8$1b$3e31f076a3226825'
-        store[:keys]['user'][:authentication].should == ['20c274efc68a460568853cc4be586183012769a312549d1aa57e29a36ec1503d'].pack('H*')
-        store[:keys]['user'][:ciphertext].should == ['39164ec082fb8b7336d3c5500af99dcb17d2e60496ed553dfab4b05c568aa926'].pack('H*')
+        store[:keys]['user'][:encrypted_point_signature].should == ['20c274efc68a460568853cc4be586183012769a312549d1aa57e29a36ec1503d'].pack('H*')
+        store[:keys]['user'][:encrypted_point].should == ['39164ec082fb8b7336d3c5500af99dcb17d2e60496ed553dfab4b05c568aa926'].pack('H*')
       end
     end
   end
@@ -65,16 +65,16 @@ describe Trustworthy::Settings do
           store[:keys] = {
             'user' => {
               :salt => '400$8$1b$3e31f076a3226825',
-              :authentication => ['20c274efc68a460568853cc4be586183012769a312549d1aa57e29a36ec1503d'].pack('H*'),
-              :ciphertext => ['39164ec082fb8b7336d3c5500af99dcb17d2e60496ed553dfab4b05c568aa926'].pack('H*')
+              :encrypted_point_signature => ['20c274efc68a460568853cc4be586183012769a312549d1aa57e29a36ec1503d'].pack('H*'),
+              :encrypted_point => ['39164ec082fb8b7336d3c5500af99dcb17d2e60496ed553dfab4b05c568aa926'].pack('H*')
             }
           }
         end
 
         settings = Trustworthy::Settings.new(@filename)
         settings.keys['user'][:salt].should == '400$8$1b$3e31f076a3226825'
-        settings.keys['user'][:authentication].should == ['20c274efc68a460568853cc4be586183012769a312549d1aa57e29a36ec1503d'].pack('H*')
-        settings.keys['user'][:ciphertext].should == ['39164ec082fb8b7336d3c5500af99dcb17d2e60496ed553dfab4b05c568aa926'].pack('H*')
+        settings.keys['user'][:encrypted_point_signature].should == ['20c274efc68a460568853cc4be586183012769a312549d1aa57e29a36ec1503d'].pack('H*')
+        settings.keys['user'][:encrypted_point].should == ['39164ec082fb8b7336d3c5500af99dcb17d2e60496ed553dfab4b05c568aa926'].pack('H*')
     end
   end
 end
