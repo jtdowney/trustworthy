@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'hkdf', '~> 0.1.0'
   s.add_dependency 'posix-spawn', '~> 0.3.6'
   s.add_dependency 'scrypt', '~> 1.1'
-  s.add_development_dependency 'fakefs', '~> 0.4.0'
   s.add_development_dependency 'rspec', '~> 2.11'
   s.add_development_dependency 'rake'
 end
