@@ -1,5 +1,3 @@
-require 'fakefs/safe'
-
 require 'trustworthy'
 
 RSpec.configure do |config|
