@@ -1,7 +1,9 @@
 require 'trustworthy'
+require 'construct'
 
 RSpec.configure do |config|
   config.order = 'random'
+  config.include Construct::Helpers
   config.before(:each) do
     Trustworthy::Random.stub(:_source).and_return('/dev/urandom')
   end
