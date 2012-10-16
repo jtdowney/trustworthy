@@ -18,7 +18,7 @@ describe Trustworthy::Crypto do
       @crypto.should be_valid_signature(given_signature, 'foobar')
     end
 
-    it 'should return false when the signature matches the data' do
+    it 'should return false when the signature does not match the data' do
       given_signature = ['4d15a6427d6b56e07b819ff0a147dd8ff77b1b5fafd33f9071b0359755edde42'].pack('H*')
       @crypto.should_not be_valid_signature(given_signature, 'foobar')
     end
