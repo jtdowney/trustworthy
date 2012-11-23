@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ['John Downey']
   s.email       = ['jdowney@gmail.com']
   s.homepage    = 'http://github.com/jtdowney/trustworthy'
+  s.license     = 'MIT'
   s.summary     = %q{Launch processes while keeping secrets encrypted on disk}
   s.description = %q{Implements a special case (k = 2) of Adi Shamir's secret sharing algorithm. This allows secret files to be encrypted on disk but loaded into a process on start if two keys are available.}
 
