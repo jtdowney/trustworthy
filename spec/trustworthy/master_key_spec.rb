@@ -6,11 +6,11 @@ describe Trustworthy::MasterKey do
     key1 = master_key.create_key
     key2 = master_key.create_key
 
-    ciphertext = master_key.encrypt('foobar')
+    ciphertext = master_key.encrypt(TestValues::Plaintext)
 
     new_master_key = Trustworthy::MasterKey.create_from_keys(key1, key2)
     plaintext = new_master_key.decrypt(ciphertext)
-    plaintext.should == 'foobar'
+    plaintext.should == TestValues::Plaintext
   end
 
   it 'should function with any 2 of n keys' do
@@ -18,14 +18,14 @@ describe Trustworthy::MasterKey do
     key1 = master_key1.create_key
     key2 = master_key1.create_key
 
-    ciphertext = master_key1.encrypt('foobar')
+    ciphertext = master_key1.encrypt(TestValues::Plaintext)
 
     master_key2 = Trustworthy::MasterKey.create_from_keys(key1, key2)
     key3 = master_key2.create_key
 
     master_key3 = Trustworthy::MasterKey.create_from_keys(key1, key3)
     plaintext = master_key3.decrypt(ciphertext)
-    plaintext.should == 'foobar'
+    plaintext.should == TestValues::Plaintext
   end
 
   describe 'self.create' do
@@ -63,25 +63,25 @@ describe Trustworthy::MasterKey do
 
   describe 'encrypt' do
     it 'should encrypt and sign the data using the intercept' do
-      Trustworthy::Random.stub(:bytes).and_return(Trustworthy::TestValues::InitializationVector)
+      AEAD::Cipher::AES_256_CBC_HMAC_SHA_256.stub(:generate_nonce).and_return(TestValues::InitializationVector)
       master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
-      ciphertext = master_key.encrypt('foobar')
-      ciphertext.should == ['0438a89ef9e5792849ef611bff0e7b405a84ac515461489499679ca77ade6a6a39164ec082fb8b7336d3c5500af99dcbde056af859baa7e72c4c2661651e88d5'].pack('H*')
+      ciphertext = master_key.encrypt(TestValues::Plaintext)
+      ciphertext.should == TestValues::Ciphertext
     end
   end
 
   describe 'decrypt' do
     it 'should decrypt and verify the data using the intercept' do
       master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
-      ciphertext = ['0438a89ef9e5792849ef611bff0e7b405a84ac515461489499679ca77ade6a6a39164ec082fb8b7336d3c5500af99dcbde056af859baa7e72c4c2661651e88d5'].pack('H*')
-      plaintext = master_key.decrypt(ciphertext)
-      plaintext.should == 'foobar'
+      plaintext = master_key.decrypt(TestValues::Ciphertext)
+      plaintext.should == TestValues::Plaintext
     end
 
     it 'should raise an invalid signature error if signatures do not match' do
       master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
-      ciphertext = ['00000000000000000000000000000000000000005461489499679ca77ade6a6a39164ec082fb8b7336d3c5500af99dcbde056af859baa7e72c4c2661651e88d5'].pack('H*')
-      expect { master_key.decrypt(ciphertext) }.to raise_error('invalid signature')
+      ciphertext = TestValues::Ciphertext.next
+      expect { master_key.decrypt(ciphertext) }.to raise_error(ArgumentError, 'ciphertext failed authentication step')
     end
   end
 end
+

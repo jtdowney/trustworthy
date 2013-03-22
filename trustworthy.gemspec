@@ -18,11 +18,12 @@ Gem::Specification.new do |s|
   s.bindir       = 'bin'
   s.executables  = ['trustworthy']
 
+  s.add_dependency 'aead', '~> 1.6'
   s.add_dependency 'commander', '~> 4.1'
   s.add_dependency 'hkdf', '~> 0.2.0'
   s.add_dependency 'posix-spawn', '~> 0.3.6'
   s.add_dependency 'scrypt', '~> 1.1'
-  s.add_development_dependency 'test-construct', '~> 1.2.0'
-  s.add_development_dependency 'rspec', '~> 2.11'
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'test-construct', '1.2.0'
+  s.add_development_dependency 'rspec', '2.13'
+  s.add_development_dependency 'rake', '10.0.3'
 end

@@ -22,27 +22,22 @@ module Trustworthy
     end
 
     def encrypt(plaintext)
-      ciphertext = _crypto.encrypt(plaintext)
-      signature = _crypto.sign(ciphertext)
-      signature + ciphertext
+      nonce = Trustworthy::Cipher.generate_nonce
+      nonce + _cipher.encrypt(nonce, '', plaintext)
     end
 
     def decrypt(ciphertext)
       ciphertext.force_encoding('BINARY') if ciphertext.respond_to?(:force_encoding)
-      signature = ciphertext.slice(0..31)
-      ciphertext = ciphertext.slice(32..-1)
-      raise 'invalid signature' unless _crypto.valid_signature?(signature, ciphertext)
-      _crypto.decrypt(ciphertext)
+      nonce = ciphertext.slice(0, Trustworthy::Cipher.nonce_len)
+      ciphertext = ciphertext.slice(Trustworthy::Cipher.nonce_len..-1)
+      _cipher.decrypt(nonce, '', ciphertext)
     end
 
-    def _crypto
-      return @crypto if @crypto
-
+    def _cipher
       secret = @intercept.to_s('F')
       hkdf = HKDF.new(secret)
-      encryption_key = hkdf.next_bytes(32)
-      authentication_key = hkdf.next_bytes(32)
-      @crypto = Trustworthy::Crypto.new(encryption_key, authentication_key)
+      key = hkdf.next_bytes(Trustworthy::Cipher.key_len)
+      Trustworthy::Cipher.new(key)
     end
   end
 end

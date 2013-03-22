@@ -13,14 +13,14 @@ module Trustworthy
     def add_key(key, username, password)
       salt = SCrypt::Engine.generate_salt
 
-      crypto = _crypto_from_password(salt, password)
+      cipher = _cipher_from_password(salt, password)
+      nonce = Trustworthy::Cipher.generate_nonce
       plaintext = "#{key.x.to_s('F')},#{key.y.to_s('F')}"
-      ciphertext = crypto.encrypt(plaintext)
+      ciphertext = cipher.encrypt(nonce, '', plaintext)
 
       @keys[username] = {
         :salt => salt,
-        :encrypted_point => ciphertext,
-        :encrypted_point_signature => crypto.sign(ciphertext)
+        :encrypted_point => nonce + ciphertext,
       }
     end
 
@@ -30,14 +30,14 @@ module Trustworthy
 
     def unlock_key(username, password)
       key_data = keys[username]
-      ciphertext = key_data[:encrypted_point]
-      signature = key_data[:encrypted_point_signature]
       salt = key_data[:salt]
+      ciphertext = key_data[:encrypted_point]
+      ciphertext.force_encoding('BINARY') if ciphertext.respond_to?(:force_encoding)
+      nonce = ciphertext.slice(0, Trustworthy::Cipher.nonce_len)
+      ciphertext = ciphertext.slice(Trustworthy::Cipher.nonce_len..-1)
 
-      crypto = _crypto_from_password(salt, password)
-      raise 'invalid signature' unless crypto.valid_signature?(signature, ciphertext)
-
-      plaintext = crypto.decrypt(ciphertext)
+      cipher = _cipher_from_password(salt, password)
+      plaintext = cipher.decrypt(nonce, '', ciphertext)
       x, y = plaintext.split(',').map { |n| BigDecimal.new(n) }
       Trustworthy::Key.new(x, y)
     end
@@ -49,14 +49,10 @@ module Trustworthy
       end
     end
 
-    def _crypto_from_password(salt, password)
+    def _cipher_from_password(salt, password)
       cost, salt = salt.rpartition('$')
-      raw_key = SCrypt::Engine.scrypt(password, salt, cost, 64)
-
-      encryption_key = raw_key.slice(0, 32)
-      authentication_key = raw_key.slice(32, 32)
-
-      Trustworthy::Crypto.new(encryption_key, authentication_key)
+      key = SCrypt::Engine.scrypt(password, salt, cost, 64)
+      Trustworthy::Cipher.new(key)
     end
   end
 end
