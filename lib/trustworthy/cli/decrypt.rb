@@ -34,12 +34,14 @@ module Trustworthy
           return
         end
 
-        ciphertext = File.read(options[:input_file])
-        Trustworthy::Settings.open(options[:config_file]) do |settings|
-          master_key = unlock_master_key(settings)
-          plaintext = master_key.decrypt(ciphertext)
-          File.open(options[:output_file], 'wb+') do |file|
-            file.write(plaintext)
+        File.open(options[:input_file], 'rb') do |input_file|
+          ciphertext = input_file.read
+          Trustworthy::Settings.open(options[:config_file]) do |settings|
+            master_key = unlock_master_key(settings)
+            plaintext = master_key.decrypt(ciphertext)
+            File.open(options[:output_file], 'wb+') do |output_file|
+              output_file.write(plaintext)
+            end
           end
         end
 

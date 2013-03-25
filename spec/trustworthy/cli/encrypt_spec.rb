@@ -27,8 +27,10 @@ describe Trustworthy::CLI::Encrypt do
         Trustworthy::CLI::Encrypt.new.run(['-i', 'input.txt', '-o', 'output.txt'])
       end
 
-      ciphertext = File.read('output.txt', :mode => 'rb')
-      ciphertext.should == TestValues::EncryptedFile
+      File.open('output.txt', 'rb') do |file|
+        ciphertext = file.read
+        ciphertext.should == TestValues::EncryptedFile
+      end
     end
 
     it 'should require an input file' do
