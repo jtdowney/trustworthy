@@ -1,7 +1,6 @@
 require 'aead'
 require 'bigdecimal'
 require 'hkdf'
-require 'posix/spawn'
 require 'scrypt'
 require 'securerandom'
 require 'trustworthy/key'

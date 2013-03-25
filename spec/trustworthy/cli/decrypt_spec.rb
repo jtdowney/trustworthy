@@ -1,0 +1,61 @@
+require 'spec_helper'
+
+describe Trustworthy::CLI::Decrypt do
+  before(:each) do
+    $terminal.stub(:say)
+  end
+
+  around(:each) do |example|
+    within_construct do |construct|
+      construct.file(TestValues::SettingsFile)
+      construct.file('input.txt', TestValues::EncryptedFile)
+      construct.file('output.txt')
+      create_config(TestValues::SettingsFile)
+      example.run
+    end
+  end
+
+  describe 'run' do
+    it 'should unlock the master key and decrypt the file' do
+      HighLine::Simulate.with(
+        'user1',
+        'password1',
+        'user2',
+        'password2'
+      ) do
+        Trustworthy::CLI::Decrypt.new.run(['-i', 'input.txt', '-o', 'output.txt'])
+      end
+
+      ciphertext = File.read('output.txt', :mode => 'rb')
+      ciphertext.should == TestValues::Plaintext
+    end
+
+    it 'should require an input file' do
+      HighLine::Simulate.with(
+        'user1',
+        'password1',
+        'user2',
+        'password2'
+      ) do
+        encrypt = Trustworthy::CLI::Encrypt.new
+        encrypt.should_receive(:print_help)
+        $terminal.should_receive(:say).with('Must provide an input file')
+        encrypt.run([])
+      end
+    end
+
+    it 'should require an output file' do
+      HighLine::Simulate.with(
+        'user1',
+        'password1',
+        'user2',
+        'password2'
+      ) do
+        encrypt = Trustworthy::CLI::Encrypt.new
+        encrypt.should_receive(:print_help)
+        $terminal.should_receive(:say).with('Must provide an output file')
+        encrypt.run(['-i', 'input.txt'])
+      end
+    end
+  end
+end

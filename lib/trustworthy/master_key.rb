@@ -1,5 +1,7 @@
 module Trustworthy
   class MasterKey
+    attr_reader :slope, :intercept
+
     def self.create
       slope = Trustworthy::Random.number
       intercept = Trustworthy::Random.number
@@ -15,6 +17,10 @@ module Trustworthy
     def initialize(slope, intercept)
       @slope = slope
       @intercept = intercept
+    end
+
+    def ==(other)
+      @slope == other.slope && @intercept == other.intercept
     end
 
     def create_key

@@ -1,13 +1,14 @@
 module Trustworthy
   class Settings
-    attr_reader :keys, :secrets
-
-    def initialize(filename)
-      @store = YAML::Store.new(filename)
-      @store.transaction do
-        @keys = @store.fetch(:keys, {})
-        @secrets = @store.fetch(:secrets, {})
+    def self.open(filename)
+      store = YAML::Store.new(filename)
+      store.transaction do
+        yield Trustworthy::Settings.new(store)
       end
+    end
+
+    def initialize(store)
+      @store = store
     end
 
     def add_key(key, username, password)
@@ -18,20 +19,20 @@ module Trustworthy
       plaintext = "#{key.x.to_s('F')},#{key.y.to_s('F')}"
       ciphertext = cipher.encrypt(nonce, '', plaintext)
 
-      @keys[username] = {
-        :salt => salt,
-        :encrypted_point => nonce + ciphertext,
+      @store[username] = {
+        'salt' => salt,
+        'encrypted_point' => nonce + ciphertext,
       }
     end
 
-    def add_secret(environment, filename)
-      @secrets[environment] = filename
+    def find_key(username)
+      @store[username]
     end
 
     def unlock_key(username, password)
-      key_data = keys[username]
-      salt = key_data[:salt]
-      ciphertext = key_data[:encrypted_point]
+      key = find_key(username)
+      salt = key['salt']
+      ciphertext = key['encrypted_point']
       ciphertext.force_encoding('BINARY') if ciphertext.respond_to?(:force_encoding)
       nonce = ciphertext.slice(0, Trustworthy::Cipher.nonce_len)
       ciphertext = ciphertext.slice(Trustworthy::Cipher.nonce_len..-1)
@@ -40,13 +41,6 @@ module Trustworthy
       plaintext = cipher.decrypt(nonce, '', ciphertext)
       x, y = plaintext.split(',').map { |n| BigDecimal.new(n) }
       Trustworthy::Key.new(x, y)
-    end
-
-    def write(filename)
-      @store.transaction do
-        @store[:keys] = @keys
-        @store[:secrets] = @secrets
-      end
     end
 
     def _cipher_from_password(salt, password)
