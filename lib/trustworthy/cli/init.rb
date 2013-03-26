@@ -29,6 +29,11 @@ module Trustworthy
         end
 
         Trustworthy::Settings.open(options[:config_file]) do |settings|
+          unless settings.empty?
+            error "Config #{options[:config_file]} already exists"
+            return
+          end
+
           info "Creating a new master key with #{options[:keys]} keys"
 
           master_key = Trustworthy::MasterKey.create

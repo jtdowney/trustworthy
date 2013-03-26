@@ -25,6 +25,10 @@ module Trustworthy
       }
     end
 
+    def empty?
+      @store.roots.empty?
+    end
+
     def find_key(username)
       @store[username]
     end
