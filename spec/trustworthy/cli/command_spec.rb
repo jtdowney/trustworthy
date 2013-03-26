@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-describe Trustworthy::CLI::Helpers do
-  def test_klass
-    klass = Class.new
-    klass.send(:include, Trustworthy::CLI::Helpers)
-    klass
+describe Trustworthy::CLI::Command do
+  def test_command
+    return @klass if @klass
+    @klass = Class.new
+    @klass.send(:include, Trustworthy::CLI::Command)
+    @klass
   end
 
   before(:each) do
@@ -21,7 +22,9 @@ describe Trustworthy::CLI::Helpers do
 
   describe 'unlock_master_key' do
     it 'should require two distinct keys to unlock' do
-      $terminal.should_receive(:say).with('Key user1 is already in use')
+      command = test_command.new
+      command.should_receive(:error).with('Key user1 is already in use')
+
       HighLine::Simulate.with(
         'user1',
         'password1',
@@ -30,48 +33,52 @@ describe Trustworthy::CLI::Helpers do
         'password2'
       ) do
         Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-          master_key = test_klass.new.unlock_master_key(settings)
+          master_key = command.unlock_master_key(settings)
           master_key.should == TestValues::MasterKey
         end
       end
     end
 
     it 'should required an existing user for the first key' do
-      $terminal.should_receive(:say).with('Key missing does not exist')
+      command = test_command.new
+      command.should_receive(:error).with('Key missing does not exist')
+
       HighLine::Simulate.with(
         'missing',
         'user1',
-        'bad_password',
         'password1',
         'user2',
         'password2'
       ) do
         Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-          master_key = test_klass.new.unlock_master_key(settings)
+          master_key = command.unlock_master_key(settings)
           master_key.should == TestValues::MasterKey
         end
       end
     end
 
     it 'should required an existing user for the second key' do
-      $terminal.should_receive(:say).with('Key missing does not exist')
+      command = test_command.new
+      command.should_receive(:error).with('Key missing does not exist')
+
       HighLine::Simulate.with(
         'user1',
-        'bad_password',
         'password1',
         'missing',
         'user2',
         'password2'
       ) do
         Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-          master_key = test_klass.new.unlock_master_key(settings)
+          master_key = command.unlock_master_key(settings)
           master_key.should == TestValues::MasterKey
         end
       end
     end
 
     it 'should prompt for the correct password for the first key' do
-      $terminal.should_receive(:say).with('Password incorrect for user1')
+      command = test_command.new
+      command.should_receive(:error).with('Password incorrect for user1')
+
       HighLine::Simulate.with(
         'user1',
         'bad_password',
@@ -80,14 +87,16 @@ describe Trustworthy::CLI::Helpers do
         'password2'
       ) do
         Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-          master_key = test_klass.new.unlock_master_key(settings)
+          master_key = command.unlock_master_key(settings)
           master_key.should == TestValues::MasterKey
         end
       end
     end
 
     it 'should prompt for the correct password for the second key' do
-      $terminal.should_receive(:say).with('Password incorrect for user2')
+      command = test_command.new
+      command.should_receive(:error).with('Password incorrect for user2')
+
       HighLine::Simulate.with(
         'user1',
         'password1',
@@ -96,7 +105,7 @@ describe Trustworthy::CLI::Helpers do
         'password2'
       ) do
         Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-          master_key = test_klass.new.unlock_master_key(settings)
+          master_key = command.unlock_master_key(settings)
           master_key.should == TestValues::MasterKey
         end
       end

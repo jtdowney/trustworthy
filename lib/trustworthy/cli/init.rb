@@ -23,21 +23,21 @@ module Trustworthy
         options = parse_options(args)
 
         if options[:keys] < 2
-          $terminal.say "Must generate at least two keys"
+          error "Must generate at least two keys"
           print_help
           return
         end
 
-        $terminal.say $terminal.color("Creating a new master key with #{options[:keys]} keys.", :info)
-        master_key = Trustworthy::MasterKey.create
-
         Trustworthy::Settings.open(options[:config_file]) do |settings|
+          info "Creating a new master key with #{options[:keys]} keys"
+
+          master_key = Trustworthy::MasterKey.create
           options[:keys].times do
             username = add_key(settings, master_key)
-            $terminal.say "Key #{username} added."
+            info "Key #{username} added"
           end
 
-          $terminal.say "Created #{options[:config_file]}"
+          info "Created #{options[:config_file]}"
         end
       end
     end

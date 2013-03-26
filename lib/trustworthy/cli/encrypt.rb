@@ -23,13 +23,13 @@ module Trustworthy
         options = parse_options(args)
 
         unless options.has_key?(:input_file)
-          $terminal.say 'Must provide an input file'
+          error 'Must provide an input file'
           print_help
           return
         end
 
         unless options.has_key?(:output_file)
-          $terminal.say 'Must provide an output file'
+          error 'Must provide an output file'
           print_help
           return
         end
@@ -45,7 +45,7 @@ module Trustworthy
           end
         end
 
-        $terminal.say "Encrypted #{options[:input_file]} to #{options[:output_file]}"
+        info "Encrypted #{options[:input_file]} to #{options[:output_file]}"
       end
     end
   end

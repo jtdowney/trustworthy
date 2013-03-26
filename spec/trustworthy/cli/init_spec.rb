@@ -97,8 +97,8 @@ describe Trustworthy::CLI::Init do
 
     it 'should require two subkeys minimum' do
       init = Trustworthy::CLI::Init.new
+      init.should_receive(:error).with('Must generate at least two keys')
       init.should_receive(:print_help)
-      $terminal.should_receive(:say).with('Must generate at least two keys')
       init.run(['-k', '1'])
     end
   end

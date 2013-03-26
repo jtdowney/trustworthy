@@ -36,12 +36,12 @@ module Trustworthy
     end
 
     def _print_help
-      $terminal.say "#{Trustworthy::CLI.banner}\n\n"
-      $terminal.say 'Commands:'
+      say "#{Trustworthy::CLI.banner}\n\n"
+      say 'Commands:'
       Commands.each do |name, klass|
-        $terminal.say '  %-8s %s' % [name, klass.description]
+        say '  %-8s %s' % [name, klass.description]
       end
-      $terminal.say "\nSee 'trustworthy <command> --help' for more information on a specific command"
+      say "\nSee 'trustworthy <command> --help' for more information on a specific command"
     end
   end
 end

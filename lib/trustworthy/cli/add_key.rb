@@ -9,12 +9,12 @@ module Trustworthy
 
       def run(args)
         options = parse_options('add-key', args)
-        $terminal.say $terminal.color('Adding a new key to master key', :info)
+        info 'Adding a new key to master key'
 
         Trustworthy::Settings.open(options[:config_file]) do |settings|
           master_key = unlock_master_key(settings)
           username = add_key(settings, master_key)
-          $terminal.say "Added #{username} to #{options[:config_file]}"
+          info "Added #{username} to #{options[:config_file]}"
         end
       end
     end
