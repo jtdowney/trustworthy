@@ -1,5 +1,3 @@
-require 'highline'
-
 module Trustworthy
   class Prompt
     def initialize(config_file, terminal = HighLine.new)
