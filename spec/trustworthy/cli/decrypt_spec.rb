@@ -40,7 +40,6 @@ describe Trustworthy::CLI::Decrypt do
         'password2'
       ) do
         decrypt = Trustworthy::CLI::Encrypt.new
-        decrypt.should_receive(:error).with('Must provide an input file')
         decrypt.should_receive(:print_help)
         decrypt.run([])
       end
@@ -54,7 +53,6 @@ describe Trustworthy::CLI::Decrypt do
         'password2'
       ) do
         decrypt = Trustworthy::CLI::Encrypt.new
-        decrypt.should_receive(:error).with('Must provide an output file')
         decrypt.should_receive(:print_help)
         decrypt.run(['-i', 'input.txt'])
       end

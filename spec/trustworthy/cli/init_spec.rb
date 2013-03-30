@@ -15,33 +15,13 @@ describe Trustworthy::CLI::Init do
   describe 'run' do
     it 'should not allow any previous keys to exist' do
       create_config(TestValues::SettingsFile)
-      $terminal.should_receive(:say).with(/Config trustworthy\.yml already exists/)
+      $terminal.should_receive(:say).with('Config trustworthy.yml already exists')
       Trustworthy::CLI::Init.new.run([])
     end
 
     it 'should write a settings file' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
-        'password1',
-        'user2',
-        'password2',
-        'password2'
-      ) do
-        Trustworthy::CLI::Init.new.run([])
-      end
-
-      contents = File.read(TestValues::SettingsFile)
-      subkeys = YAML.load(contents)
-      subkeys.should have_key('user1')
-      subkeys.should have_key('user2')
-    end
-
-    it 'should confirm passwords' do
-      HighLine::Simulate.with(
-        'user1',
-        'password1',
-        'password2',
         'password1',
         'password1',
         'user2',
@@ -103,7 +83,6 @@ describe Trustworthy::CLI::Init do
 
     it 'should require two subkeys minimum' do
       init = Trustworthy::CLI::Init.new
-      init.should_receive(:error).with('Must generate at least two keys')
       init.should_receive(:print_help)
       init.run(['-k', '1'])
     end

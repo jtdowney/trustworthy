@@ -33,6 +33,14 @@ module Trustworthy
       @store[username]
     end
 
+    def has_key?(username)
+      @store.root?(username)
+    end
+
+    def recoverable?
+      @store.roots.count >= 2
+    end
+
     def unlock_key(username, password)
       key = find_key(username)
       salt = key['salt']

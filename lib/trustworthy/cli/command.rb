@@ -1,8 +1,6 @@
 module Trustworthy
   class CLI
     module Command
-      include Trustworthy::CLI::Helpers
-
       def default_options
         { :config_file => 'trustworthy.yml' }
       end

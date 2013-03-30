@@ -41,7 +41,6 @@ describe Trustworthy::CLI::Encrypt do
         'password2'
       ) do
         encrypt = Trustworthy::CLI::Encrypt.new
-        encrypt.should_receive(:error).with('Must provide an input file')
         encrypt.should_receive(:print_help)
         encrypt.run([])
       end
@@ -55,7 +54,6 @@ describe Trustworthy::CLI::Encrypt do
         'password2'
       ) do
         encrypt = Trustworthy::CLI::Encrypt.new
-        encrypt.should_receive(:error).with('Must provide an output file')
         encrypt.should_receive(:print_help)
         encrypt.run(['-i', 'input.txt'])
       end

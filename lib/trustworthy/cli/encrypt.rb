@@ -22,30 +22,22 @@ module Trustworthy
       def run(args)
         options = parse_options(args)
 
-        unless options.has_key?(:input_file)
-          error 'Must provide an input file'
+        unless options.has_key?(:input_file) && options.has_key?(:output_file)
           print_help
           return
         end
 
-        unless options.has_key?(:output_file)
-          error 'Must provide an output file'
-          print_help
-          return
-        end
-
+        prompt = Trustworthy::Prompt.new(options[:config_file], $terminal)
         File.open(options[:input_file], 'rb') do |input_file|
           plaintext = input_file.read
-          Trustworthy::Settings.open(options[:config_file]) do |settings|
-            master_key = unlock_master_key(settings)
-            ciphertext = master_key.encrypt(plaintext)
-            File.open(options[:output_file], 'wb+') do |output_file|
-              output_file.write(ciphertext)
-            end
+          master_key = prompt.unlock_master_key
+          ciphertext = master_key.encrypt(plaintext)
+          File.open(options[:output_file], 'wb+') do |output_file|
+            output_file.write(ciphertext)
           end
         end
 
-        info "Encrypted #{options[:input_file]} to #{options[:output_file]}"
+        $terminal.say("Encrypted #{options[:input_file]} to #{options[:output_file]}")
       end
     end
   end

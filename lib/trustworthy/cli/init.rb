@@ -23,27 +23,28 @@ module Trustworthy
         options = parse_options(args)
 
         if options[:keys] < 2
-          error "Must generate at least two keys"
           print_help
           return
         end
 
         Trustworthy::Settings.open(options[:config_file]) do |settings|
           unless settings.empty?
-            error "Config #{options[:config_file]} already exists"
+            $terminal.say("Config #{options[:config_file]} already exists")
             return
           end
-
-          info "Creating a new master key with #{options[:keys]} keys"
-
-          master_key = Trustworthy::MasterKey.create
-          options[:keys].times do
-            username = add_key(settings, master_key)
-            info "Key #{username} added"
-          end
-
-          info "Created #{options[:config_file]}"
         end
+
+        $terminal.say("Creating a new master key with #{options[:keys]} keys")
+
+        master_key = Trustworthy::MasterKey.create
+        prompt = Trustworthy::Prompt.new(options[:config_file], $terminal)
+        options[:keys].times do
+          key = master_key.create_key
+          username = prompt.add_user_key(key)
+          $terminal.say("Key #{username} added")
+        end
+
+        $terminal.say("Created #{options[:config_file]}")
       end
     end
   end

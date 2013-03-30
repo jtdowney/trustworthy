@@ -63,6 +63,48 @@ describe Trustworthy::Settings do
     end
   end
 
+  describe 'has_key?' do
+    it 'should be true if the key exists' do
+      Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
+        key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+        settings.add_key(key, 'user', 'password1')
+        settings.should have_key('user')
+      end
+    end
+
+    it 'should be false if the key does exists' do
+      Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
+        settings.should_not have_key('missing')
+      end
+    end
+  end
+
+  describe 'recoverable?' do
+    it 'should not be recoverable with no user keys' do
+      Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
+        settings.should_not be_recoverable
+      end
+    end
+
+    it 'should not be recoverable with one user key' do
+      Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
+        key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+        settings.add_key(key, 'user', 'password')
+        settings.should_not be_recoverable
+      end
+    end
+
+    it 'should be recoverable with two or more user keys' do
+      Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
+        key1 = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+        key2 = Trustworthy::Key.new(BigDecimal.new('3'), BigDecimal.new('4'))
+        settings.add_key(key1, 'user1', 'password')
+        settings.add_key(key2, 'user2', 'password')
+        settings.should be_recoverable
+      end
+    end
+  end
+
   describe 'unlock_key' do
     it 'should decrypt the key with the password' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
