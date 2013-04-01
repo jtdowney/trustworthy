@@ -29,12 +29,12 @@ module Trustworthy
 
         Trustworthy::Settings.open(options[:config_file]) do |settings|
           unless settings.empty?
-            $terminal.say("Config #{options[:config_file]} already exists")
+            say("Config #{options[:config_file]} already exists")
             return
           end
         end
 
-        $terminal.say("Creating a new master key with #{options[:keys]} keys")
+        say("Creating a new master key with #{options[:keys]} keys")
 
         master_key = Trustworthy::MasterKey.create
         prompt = Trustworthy::Prompt.new(options[:config_file], $terminal)
@@ -44,7 +44,7 @@ module Trustworthy
           $terminal.say("Key #{username} added")
         end
 
-        $terminal.say("Created #{options[:config_file]}")
+        say("Created #{options[:config_file]}")
       end
     end
   end

@@ -32,29 +32,8 @@ module Trustworthy
         end
       end
 
-      def ask(prompt)
-        $terminal.ask(prompt).to_s
-      end
-
-      def ask_password(prompt)
-        $terminal.ask(prompt) { |q| q.echo = false }.to_s
-      end
-
-      def error(message)
-        say_color(message, :error)
-      end
-
-      def info(message)
-        say_color(message, :info)
-      end
-
       def say(message)
         $terminal.say(message)
-      end
-
-      def say_color(message, color)
-        colored_message = $terminal.color(message, color)
-        say(colored_message)
       end
     end
   end

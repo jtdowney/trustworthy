@@ -10,14 +10,14 @@ module Trustworthy
       def run(args)
         options = parse_options('add-key', args)
 
-        $terminal.say('Adding a new key to master key')
+        say('Adding a new key to master key')
 
         prompt = Trustworthy::Prompt.new(options[:config_file], $terminal)
         master_key = prompt.unlock_master_key
         key = master_key.create_key
         username = prompt.add_user_key(key)
 
-        $terminal.say("Added #{username}")
+        say("Added #{username}")
       end
     end
   end

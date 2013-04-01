@@ -37,7 +37,7 @@ module Trustworthy
           end
         end
 
-        $terminal.say("Encrypted #{options[:input_file]} to #{options[:output_file]}")
+        say("Encrypted #{options[:input_file]} to #{options[:output_file]}")
       end
     end
   end

@@ -38,7 +38,7 @@ module Trustworthy
           end
         end
 
-        info "Decrypted #{options[:input_file]} to #{options[:output_file]}"
+        say("Decrypted #{options[:input_file]} to #{options[:output_file]}")
       end
     end
   end
