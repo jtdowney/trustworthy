@@ -3,7 +3,7 @@ module Trustworthy
     attr_reader :x, :y
 
     def self.create(slope, intercept)
-      x = Random.number
+      x = Trustworthy::Random.number
       y = slope * x + intercept
       new(x, y)
     end
