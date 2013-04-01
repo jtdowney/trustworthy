@@ -29,13 +29,18 @@ module Trustworthy
 
     def encrypt(plaintext)
       nonce = Trustworthy::Cipher.generate_nonce
-      nonce + _cipher.encrypt(nonce, '', plaintext)
+      ciphertext = _cipher.encrypt(nonce, '', plaintext)
+
+      [nonce, ciphertext].map do |field|
+        Base64.encode64(field).gsub("\n", '')
+      end.join('--')
     end
 
     def decrypt(ciphertext)
-      ciphertext.force_encoding('BINARY') if ciphertext.respond_to?(:force_encoding)
-      nonce = ciphertext.slice(0, Trustworthy::Cipher.nonce_len)
-      ciphertext = ciphertext.slice(Trustworthy::Cipher.nonce_len..-1)
+      nonce, ciphertext = ciphertext.split('--').map do |field|
+        Base64.decode64(field)
+      end
+
       _cipher.decrypt(nonce, '', ciphertext)
     end
 

@@ -79,7 +79,8 @@ describe Trustworthy::MasterKey do
 
     it 'should raise an invalid signature error if signatures do not match' do
       master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
-      ciphertext = TestValues::Ciphertext.next
+      ciphertext = TestValues::Ciphertext.dup
+      ciphertext[0] = ciphertext[0].next
       expect { master_key.decrypt(ciphertext) }.to raise_error(ArgumentError, 'ciphertext failed authentication step')
     end
   end
