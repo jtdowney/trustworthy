@@ -62,7 +62,7 @@ module Trustworthy
 
     def _cipher_from_password(salt, password)
       cost, salt = salt.rpartition('$')
-      key = SCrypt::Engine.scrypt(password, salt, cost, 64)
+      key = SCrypt::Engine.scrypt(password, salt, cost, Trustworthy::Cipher.key_len)
       Trustworthy::Cipher.new(key)
     end
   end
