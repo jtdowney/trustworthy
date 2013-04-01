@@ -1,4 +1,5 @@
 require 'aead'
+require 'base64'
 require 'bigdecimal'
 require 'highline'
 require 'hkdf'

@@ -19,9 +19,13 @@ module Trustworthy
       plaintext = "#{key.x.to_s('F')},#{key.y.to_s('F')}"
       ciphertext = cipher.encrypt(nonce, '', plaintext)
 
+      encrypted_point = [nonce, ciphertext].map do |field|
+        Base64.encode64(field).gsub("\n", '')
+      end.join('--')
+
       @store[username] = {
         'salt' => salt,
-        'encrypted_point' => nonce + ciphertext,
+        'encrypted_point' => encrypted_point
       }
     end
 
@@ -45,9 +49,10 @@ module Trustworthy
       key = find_key(username)
       salt = key['salt']
       ciphertext = key['encrypted_point']
-      ciphertext.force_encoding('BINARY') if ciphertext.respond_to?(:force_encoding)
-      nonce = ciphertext.slice(0, Trustworthy::Cipher.nonce_len)
-      ciphertext = ciphertext.slice(Trustworthy::Cipher.nonce_len..-1)
+
+      nonce, ciphertext = ciphertext.split('--').map do |field|
+        Base64.decode64(field)
+      end
 
       cipher = _cipher_from_password(salt, password)
       plaintext = cipher.decrypt(nonce, '', ciphertext)

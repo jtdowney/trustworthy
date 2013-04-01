@@ -36,25 +36,11 @@ The configuration uses ruby's `YAML::Store` to provide a simple transactional da
 
     ---
     a-user:
-      salt: 400$8$28$4c7fc59a31a9f38a
-      encrypted_point: !binary |-
-        CWcT++kRSAw/0IAVRX6KKAfwbyWBX7ZUh4dZNxL8An413CvRL2tUhWlwsKVl
-        ZKyzmc6VjpKqS4ZpGoPPUCu6xrIo5LkLwXVIpDsBx7SCoK72uEsxd9x0GW5i
-        9Mf8r40KE3gUCudntBXlxduDrqWZgW1uFFCg+U3ACt28GzGftOGjYW6PCAZO
-        N35aHYpGHWhddWeFvbaXNrAPtLSiVWSNW35RU2qo+HS+uSYGO65r9viCXC8f
-        3yLZsPjtouDRyMEv5xOPVZKnvsf3Ju3EBH7Abyw/zezS2LvzrtmxHTN5yF92
-        xphq0imIR52Yj2/k6pdRz/X/8ZsdS+HEifvvRBM+oVKQ2PQh4MIFPJuE0CWA
-        iPnpqdvjYt0M7BsodX2K897A
+      salt: 400$8$23$38f426136db22836
+      encrypted_point: dzVzPvuzKsTJ7coFLki8tQ==--vGto+f9sQhRuPb+47rUI4oSZ7gaPGKiQtBIwB//wTcvuJOm9gyrLrjH74RKKJlkScBvYuMfnhQyn9T1bIw9obsBs4YsF8VxCsDPG26Ci82n9qOENod2pP4xVzmC4VWCnbi7Y4jS+Rgsq6xp3L2zG6Ci0GWO1bSQO8hFzaMpBiCirqMAGHf0m6Yzqu6h5NFtygcyNyxAY8YxX1oxa6Bj5UwefDKplVGTI0ZbQn9vtdwKFuwXZsv11g5+zLvvq54Z2UZ/AZu/scnhXopL5IZkiclTtX8LUi9Dob3Xpqtf6WXymudvVMG0JaxkUqqRCyWtLSFE3sNdwv+877cS8PglTIKxXIZTIh7FzdEgkLSStGnw=
     another-user:
-      salt: 400$8$28$9dceab0f3414ab23
-      encrypted_point: !binary |-
-        7B1hXxwwXDU0vTLAPj6U9+WWT3o4i1r7prPOamgStDjvv7f0gZp0D3T56gZk
-        b+2Q4zwyhTM4p6DS0xdG3lfhnkQEYQ6tROnLbI1O7IvuOmFVsDNLej9ps7hJ
-        e1kdFiLaF3efRYtHs2GYdEVrRWWDFgfLDVFVoFbqDruRX1ltTVuaJvS9f7Qb
-        FPI8a2gJ0sl+1B5eBJeR1Chbdn3rHxK7SHq+J/SAJV7xKmkQa6B8g2V1D3xE
-        oB45Gmgm9o1s1/van72ckT91HPh55B8tHnjeZZwdHEp7Z8lyLrDxhbpQm7ql
-        ESpbM8BvdFCmzns5ZSku5Jgc78MwQ5YO1y/QXY+s9so7SDLI9yF18q4no81f
-        sNpbmdY+NolXChlDRZcZ9qJk
+      salt: 400$8$23$df3b3153ee94da81
+      encrypted_point: Shx/GRuOYz+Ts/5f5z1yDw==--1ulNtnX6Zi3z0t12TiCItE5H5dhZZONKcgt6yq1g2prJWd1q5c9ArL10BtK/9lSPoXMsyO8rURKZ3pCM4hzW043B1ksJQtyg6O71ilnSvP+4Yty8oH0SW67cGSgfkfUc0UkfcE2Osfy/YVkP/HH47qTLNTg406uJ2uWjb6OkW8sjD+mq3hp8tehyy20tEBhqyM0UOSCpvhb+EgFfYFDeG+8Gj+r4lfcdqJJvzcy5U17tpYknQm/WbnmIkvgZRFGH/NIthJdPnK43SsdPbVcSHdkw71urJ3pBmgCmyTFcdmpiSl/t1rG09f2KT63YDF+4YUSn1fuIFZXbrLez59svHbKnQ8YHvt9pCXiQHelk8Sk=
 
 ## Reference
 
