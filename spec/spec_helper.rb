@@ -19,7 +19,14 @@ module TestValues
   Salt = '400$8$1b$3e31f076a3226825'
   MasterKey = Trustworthy::MasterKey.new(BigDecimal.new('1'), BigDecimal.new('5'))
   EncryptedPoint = 'ORZOwIL7i3M208VQCvmdyw==--F9LmBJbtVT36tLBcVoqpJgy45TkwkRyOcYvJfriN70AOXKweTuPRUGCSDCXRNGKF'
-  EncryptedFile = 'ORZOwIL7i3M208VQCvmdyw==--o39ZYHOC+HotoUiBqeHqvSOWXUbXwaZRsMkwzQ7nVtk1jWftqroCoi6QITaiqQlTZywpN7DLqsAWeSKRhXipjA=='
+  EncryptedFile = <<-EOF
+-----BEGIN TRUSTWORTHY ENCRYPTED FILE-----
+Version: Trustworthy/#{Trustworthy::VERSION}
+
+ORZOwIL7i3M208VQCvmdyw==--o39ZYHOC+HotoUiBqeHqvSOWXUbXwaZRsMkwzQ
+7nVtk1jWftqroCoi6QITaiqQlTZywpN7DLqsAWeSKRhXipjA==
+-----END TRUSTWORTHY ENCRYPTED FILE-----
+EOF
 end
 
 def create_config(filename)

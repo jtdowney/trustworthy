@@ -26,10 +26,8 @@ describe Trustworthy::CLI::Decrypt do
         Trustworthy::CLI::Decrypt.new.run(['-i', 'input.txt', '-o', 'output.txt'])
       end
 
-      File.open('output.txt', 'rb') do |file|
-        ciphertext = file.read
-        ciphertext.should == TestValues::Plaintext
-      end
+      plaintext = File.read('output.txt')
+      plaintext.should == TestValues::Plaintext
     end
 
     it 'should require an input file' do

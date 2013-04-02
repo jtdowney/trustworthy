@@ -32,8 +32,17 @@ module Trustworthy
           plaintext = input_file.read
           master_key = prompt.unlock_master_key
           ciphertext = master_key.encrypt(plaintext)
-          File.open(options[:output_file], 'wb+') do |output_file|
-            output_file.write(ciphertext)
+          File.open(options[:output_file], 'w+') do |output_file|
+            wrapped_ciphertext = ciphertext.scan(/.{1,64}/).join("\n")
+            output_file.write('-----BEGIN TRUSTWORTHY ENCRYPTED FILE-----')
+            output_file.write("\n")
+            output_file.write("Version: Trustworthy/#{Trustworthy::VERSION}")
+            output_file.write("\n")
+            output_file.write("\n")
+            output_file.write(wrapped_ciphertext)
+            output_file.write("\n")
+            output_file.write('-----END TRUSTWORTHY ENCRYPTED FILE-----')
+            output_file.write("\n")
           end
         end
 

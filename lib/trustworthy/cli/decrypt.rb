@@ -28,8 +28,11 @@ module Trustworthy
         end
 
         prompt = Trustworthy::Prompt.new(options[:config_file], $terminal)
-        File.open(options[:input_file], 'rb') do |input_file|
-          ciphertext = input_file.read
+        File.open(options[:input_file], 'r') do |input_file|
+          wrapped_ciphertext = input_file.read
+          ciphertext = wrapped_ciphertext.gsub(/-+(BEGIN|END) TRUSTWORTHY ENCRYPTED FILE-+/, '')
+          ciphertext = ciphertext.gsub(/^Version: .*$/, '')
+          ciphertext = ciphertext.gsub("\n", '')
 
           master_key = prompt.unlock_master_key
           plaintext = master_key.decrypt(ciphertext)
