@@ -47,7 +47,3 @@ The configuration uses ruby's `YAML::Store` to provide a simple transactional da
 * RSA Labs - [http://www.rsa.com/rsalabs/node.asp?id=2259](http://www.rsa.com/rsalabs/node.asp?id=2259)
 * ssss - [http://point-at-infinity.org/ssss/](http://point-at-infinity.org/ssss/)
 * Secret sharing on Wikipedia - [http://en.wikipedia.org/wiki/Secret_sharing](http://en.wikipedia.org/wiki/Secret_sharing)
-
-## License
-
-Trustworthy is released under the [MIT license](http://www.opensource.org/licenses/MIT).
