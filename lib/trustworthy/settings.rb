@@ -2,6 +2,10 @@ module Trustworthy
   class Settings
     def self.open(filename)
       store = YAML::Store.new(filename)
+      if store.respond_to?(:ultra_safe=)
+        store.ultra_safe = true
+      end
+
       store.transaction do
         yield Trustworthy::Settings.new(store)
       end
