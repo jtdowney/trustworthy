@@ -30,6 +30,11 @@ module Trustworthy
         prompt = Trustworthy::Prompt.new(options[:config_file], $terminal)
         File.open(options[:input_file], 'r') do |input_file|
           wrapped_ciphertext = input_file.read
+          unless wrapped_ciphertext.include?('TRUSTWORTHY ENCRYPTED FILE')
+            say("File #{options[:input_file]} does not appear to be a trustworthy encrypted file")
+            return
+          end
+
           ciphertext = wrapped_ciphertext.gsub(/-+(BEGIN|END) TRUSTWORTHY ENCRYPTED FILE-+/, '')
           ciphertext = ciphertext.gsub(/^Version: .*$/, '')
           ciphertext = ciphertext.gsub("\n", '')

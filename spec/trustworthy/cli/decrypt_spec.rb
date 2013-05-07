@@ -37,7 +37,7 @@ describe Trustworthy::CLI::Decrypt do
         'user2',
         'password2'
       ) do
-        decrypt = Trustworthy::CLI::Encrypt.new
+        decrypt = Trustworthy::CLI::Decrypt.new
         decrypt.should_receive(:print_help)
         decrypt.run([])
       end
@@ -50,10 +50,20 @@ describe Trustworthy::CLI::Decrypt do
         'user2',
         'password2'
       ) do
-        decrypt = Trustworthy::CLI::Encrypt.new
+        decrypt = Trustworthy::CLI::Decrypt.new
         decrypt.should_receive(:print_help)
         decrypt.run(['-i', 'input.txt'])
       end
+    end
+
+    it 'should error on non-trustworthy input files' do
+      File.open('input.txt', 'w+') do |file|
+        file.write('bad file')
+      end
+
+      decrypt = Trustworthy::CLI::Decrypt.new
+      decrypt.should_receive(:say).with('File input.txt does not appear to be a trustworthy encrypted file')
+      decrypt.run(['-i', 'input.txt', '-o', 'output.txt'])
     end
   end
 end
