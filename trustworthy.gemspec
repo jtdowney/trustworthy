@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Encrypt and decrypt files with multiple key holders}
   s.description = %q{Implements a special case (k = 2) of Adi Shamir's secret sharing algorithm. This allows secret files to be encrypted on disk and require two secret holders to decrypt it.}
 
-  s.files        = Dir.glob('{lib,spec}/**/*.rb') + %w{bin/trustworthy README.md}
+  s.files        = Dir.glob('{lib,spec}/**/*.rb') + %w{bin/trustworthy README.md LICENSE}
   s.test_files   = Dir.glob('spec/**/*')
   s.require_path = 'lib'
   s.bindir       = 'bin'
