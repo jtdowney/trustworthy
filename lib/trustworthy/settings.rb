@@ -15,8 +15,7 @@ module Trustworthy
 
     def add_key(key, username, password)
       salt = SCrypt::Engine.generate_salt
-      plaintext = "#{key.x.to_s('F')},#{key.y.to_s('F')}"
-      encrypted_point = _encrypt(plaintext, salt, password)
+      encrypted_point = _encrypt(key.to_s, salt, password)
       @store[username] = {'salt' => salt, 'encrypted_point' => encrypted_point}
     end
 
@@ -41,8 +40,7 @@ module Trustworthy
       salt = key['salt']
       ciphertext = key['encrypted_point']
       plaintext = _decrypt(ciphertext, salt, password)
-      x, y = plaintext.split(',').map { |n| BigDecimal.new(n) }
-      Trustworthy::Key.new(x, y)
+      Trustworthy::Key.create_from_string(plaintext)
     end
 
     def _cipher_from_password(salt, password)
