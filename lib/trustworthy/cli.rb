@@ -2,6 +2,7 @@ require 'highline/import'
 require 'optparse'
 
 require 'trustworthy/cli/command'
+require 'trustworthy/cli/crypt'
 require 'trustworthy/cli/add_key'
 require 'trustworthy/cli/init'
 require 'trustworthy/cli/decrypt'
