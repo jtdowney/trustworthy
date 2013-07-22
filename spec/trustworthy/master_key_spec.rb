@@ -10,7 +10,7 @@ describe Trustworthy::MasterKey do
 
     new_master_key = Trustworthy::MasterKey.create_from_keys(key1, key2)
     plaintext = new_master_key.decrypt(ciphertext)
-    plaintext.should == TestValues::Plaintext
+    expect(plaintext).to eq(TestValues::Plaintext)
   end
 
   it 'should function with any 2 of n keys' do
@@ -25,7 +25,7 @@ describe Trustworthy::MasterKey do
 
     master_key3 = Trustworthy::MasterKey.create_from_keys(key1, key3)
     plaintext = master_key3.decrypt(ciphertext)
-    plaintext.should == TestValues::Plaintext
+    expect(plaintext).to eq(TestValues::Plaintext)
   end
 
   describe 'self.create' do
@@ -33,8 +33,8 @@ describe Trustworthy::MasterKey do
       Trustworthy::Random.stub(:number).and_return(BigDecimal.new('10'))
       master_key = Trustworthy::MasterKey.create
       key = master_key.create_key
-      key.x.should == 10
-      key.y.should == 110
+      expect(key.x).to eq(10)
+      expect(key.y).to eq(110)
     end
   end
 
@@ -47,8 +47,8 @@ describe Trustworthy::MasterKey do
 
       master_key = Trustworthy::MasterKey.create_from_keys(key1, key2)
       new_key = master_key.create_key
-      new_key.x.should == 10
-      new_key.y.should == 110
+      expect(new_key.x).to eq(10)
+      expect(new_key.y).to eq(110)
     end
   end
 
@@ -56,8 +56,8 @@ describe Trustworthy::MasterKey do
     it 'should define a new key' do
       master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
       key = master_key.create_key
-      key.x.should_not == 0
-      key.y.should_not == 0
+      expect(key.x).to_not eq(0)
+      expect(key.y).to_not eq(0)
     end
   end
 
@@ -66,7 +66,7 @@ describe Trustworthy::MasterKey do
       AEAD::Cipher::AES_256_CBC_HMAC_SHA_256.stub(:generate_nonce).and_return(TestValues::InitializationVector)
       master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
       ciphertext = master_key.encrypt(TestValues::Plaintext)
-      ciphertext.should == TestValues::Ciphertext
+      expect(ciphertext).to eq(TestValues::Ciphertext)
     end
   end
 
@@ -74,7 +74,7 @@ describe Trustworthy::MasterKey do
     it 'should decrypt and verify the data using the intercept' do
       master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
       plaintext = master_key.decrypt(TestValues::Ciphertext)
-      plaintext.should == TestValues::Plaintext
+      expect(plaintext).to eq(TestValues::Plaintext)
     end
 
     it 'should raise an invalid signature error if signatures do not match' do

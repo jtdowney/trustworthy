@@ -24,7 +24,7 @@ describe Trustworthy::Prompt do
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         username = prompt.add_user_key(test_key)
-        username.should == 'user3'
+        expect(username).to eq('user3')
       end
     end
 
@@ -38,7 +38,7 @@ describe Trustworthy::Prompt do
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         username = prompt.add_user_key(test_key)
-        username.should == 'user3'
+        expect(username).to eq('user3')
       end
     end
 
@@ -52,9 +52,9 @@ describe Trustworthy::Prompt do
         'password'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
-        prompt.should_receive(:_error).with('Key user1 is already in use')
+        expect(prompt).to receive(:_error).with('Key user1 is already in use')
         username = prompt.add_user_key(test_key)
-        username.should == 'user3'
+        expect(username).to eq('user3')
       end
     end
   end
@@ -69,7 +69,7 @@ describe Trustworthy::Prompt do
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         master_key = prompt.unlock_master_key
-        master_key.should == TestValues::MasterKey
+        expect(master_key).to eq(TestValues::MasterKey)
       end
     end
 
@@ -81,7 +81,7 @@ describe Trustworthy::Prompt do
       expect do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         master_key = prompt.unlock_master_key
-        master_key.should == TestValues::MasterKey
+        expect(master_key).to eq(TestValues::MasterKey)
       end.to raise_error('must have two keys to unlock master key')
     end
 
@@ -94,7 +94,7 @@ describe Trustworthy::Prompt do
         'password2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
-        prompt.should_receive(:_error).with('Key user1 is already in use')
+        expect(prompt).to receive(:_error).with('Key user1 is already in use')
         prompt.unlock_master_key
       end
     end
@@ -108,7 +108,7 @@ describe Trustworthy::Prompt do
         'password2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
-        prompt.should_receive(:_error).with('Key missing does not exist')
+        expect(prompt).to receive(:_error).with('Key missing does not exist')
         prompt.unlock_master_key
       end
     end
@@ -122,7 +122,7 @@ describe Trustworthy::Prompt do
         'password2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
-        prompt.should_receive(:_error).with('Key missing does not exist')
+        expect(prompt).to receive(:_error).with('Key missing does not exist')
         prompt.unlock_master_key
       end
     end
@@ -136,7 +136,7 @@ describe Trustworthy::Prompt do
         'password2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
-        prompt.should_receive(:_error).with('Password incorrect for user1')
+        expect(prompt).to receive(:_error).with('Password incorrect for user1')
         prompt.unlock_master_key
       end
     end
@@ -150,7 +150,7 @@ describe Trustworthy::Prompt do
         'password2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
-        prompt.should_receive(:_error).with('Password incorrect for user2')
+        expect(prompt).to receive(:_error).with('Password incorrect for user2')
         prompt.unlock_master_key
       end
     end

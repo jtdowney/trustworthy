@@ -27,7 +27,7 @@ describe Trustworthy::CLI::Decrypt do
       end
 
       plaintext = File.read('output.txt')
-      plaintext.should == TestValues::Plaintext
+      expect(plaintext).to eq(TestValues::Plaintext)
     end
 
     it 'should require an input file' do
@@ -38,7 +38,7 @@ describe Trustworthy::CLI::Decrypt do
         'password2'
       ) do
         decrypt = Trustworthy::CLI::Decrypt.new
-        decrypt.should_receive(:print_help)
+        expect(decrypt).to receive(:print_help)
         decrypt.run([])
       end
     end
@@ -51,7 +51,7 @@ describe Trustworthy::CLI::Decrypt do
         'password2'
       ) do
         decrypt = Trustworthy::CLI::Decrypt.new
-        decrypt.should_receive(:print_help)
+        expect(decrypt).to receive(:print_help)
         decrypt.run(['-i', 'input.txt'])
       end
     end
@@ -62,7 +62,7 @@ describe Trustworthy::CLI::Decrypt do
       end
 
       decrypt = Trustworthy::CLI::Decrypt.new
-      decrypt.should_receive(:say).with('File input.txt does not appear to be a trustworthy encrypted file')
+      expect(decrypt).to receive(:say).with('File input.txt does not appear to be a trustworthy encrypted file')
       decrypt.run(['-i', 'input.txt', '-o', 'output.txt'])
     end
   end

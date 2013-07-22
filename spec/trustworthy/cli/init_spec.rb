@@ -15,7 +15,7 @@ describe Trustworthy::CLI::Init do
   describe 'run' do
     it 'should not allow any previous keys to exist' do
       create_config(TestValues::SettingsFile)
-      $terminal.should_receive(:say).with('Config trustworthy.yml already exists')
+      expect($terminal).to receive(:say).with('Config trustworthy.yml already exists')
       Trustworthy::CLI::Init.new.run([])
     end
 
@@ -33,8 +33,8 @@ describe Trustworthy::CLI::Init do
 
       contents = File.read(TestValues::SettingsFile)
       subkeys = YAML.load(contents)
-      subkeys.should have_key('user1')
-      subkeys.should have_key('user2')
+      expect(subkeys).to have_key('user1')
+      expect(subkeys).to have_key('user2')
     end
 
     it 'should write to a specified file' do
@@ -54,8 +54,8 @@ describe Trustworthy::CLI::Init do
 
         contents = File.read(filename)
         subkeys = YAML.load(contents)
-        subkeys.should have_key('user1')
-        subkeys.should have_key('user2')
+        expect(subkeys).to have_key('user1')
+        expect(subkeys).to have_key('user2')
       end
     end
 
@@ -76,14 +76,14 @@ describe Trustworthy::CLI::Init do
 
       contents = File.read(TestValues::SettingsFile)
       subkeys = YAML.load(contents)
-      subkeys.should have_key('user1')
-      subkeys.should have_key('user2')
-      subkeys.should have_key('user3')
+      expect(subkeys).to have_key('user1')
+      expect(subkeys).to have_key('user2')
+      expect(subkeys).to have_key('user3')
     end
 
     it 'should require two subkeys minimum' do
       init = Trustworthy::CLI::Init.new
-      init.should_receive(:print_help)
+      expect(init).to receive(:print_help)
       init.run(['-k', '1'])
     end
   end

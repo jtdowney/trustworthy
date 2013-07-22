@@ -29,9 +29,9 @@ describe Trustworthy::CLI::AddKey do
 
       contents = File.read(TestValues::SettingsFile)
       subkeys = YAML.load(contents)
-      subkeys.should have_key('user1')
-      subkeys.should have_key('user2')
-      subkeys.should have_key('user3')
+      expect(subkeys).to have_key('user1')
+      expect(subkeys).to have_key('user2')
+      expect(subkeys).to have_key('user3')
     end
   end
 end

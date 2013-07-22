@@ -28,7 +28,7 @@ describe Trustworthy::CLI::Encrypt do
       end
 
       ciphertext = File.read('output.txt')
-      ciphertext.should == TestValues::EncryptedFile
+      expect(ciphertext).to eq(TestValues::EncryptedFile)
     end
 
     it 'should require an input file' do
@@ -39,7 +39,7 @@ describe Trustworthy::CLI::Encrypt do
         'password2'
       ) do
         encrypt = Trustworthy::CLI::Encrypt.new
-        encrypt.should_receive(:print_help)
+        expect(encrypt).to receive(:print_help)
         encrypt.run([])
       end
     end
@@ -52,7 +52,7 @@ describe Trustworthy::CLI::Encrypt do
         'password2'
       ) do
         encrypt = Trustworthy::CLI::Encrypt.new
-        encrypt.should_receive(:print_help)
+        expect(encrypt).to receive(:print_help)
         encrypt.run(['-i', 'input.txt'])
       end
     end

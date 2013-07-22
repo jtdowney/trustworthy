@@ -22,8 +22,8 @@ describe Trustworthy::Settings do
 
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
         found_key = settings.find_key('user')
-        found_key['salt'].should == TestValues::Salt
-        found_key['encrypted_point'].should == TestValues::EncryptedPoint
+        expect(found_key['salt']).to eq(TestValues::Salt)
+        expect(found_key['encrypted_point']).to eq(TestValues::EncryptedPoint)
       end
     end
 
@@ -43,10 +43,12 @@ describe Trustworthy::Settings do
       end.to raise_error
 
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        settings.find_key('missing').should be_nil
+        missing_key = settings.find_key('missing')
+        expect(missing_key).to be_nil
+
         found_key = settings.find_key('user')
-        found_key['salt'].should == TestValues::Salt
-        found_key['encrypted_point'].should == TestValues::EncryptedPoint
+        expect(found_key['salt']).to eq(TestValues::Salt)
+        expect(found_key['encrypted_point']).to eq(TestValues::EncryptedPoint)
       end
     end
   end
@@ -57,8 +59,8 @@ describe Trustworthy::Settings do
         key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
         settings.add_key(key, 'user', 'password1')
         found_key = settings.find_key('user')
-        found_key['salt'].should == TestValues::Salt
-        found_key['encrypted_point'].should == TestValues::EncryptedPoint
+        expect(found_key['salt']).to eq(TestValues::Salt)
+        expect(found_key['encrypted_point']).to eq(TestValues::EncryptedPoint)
       end
     end
   end
@@ -68,13 +70,13 @@ describe Trustworthy::Settings do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
         key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
         settings.add_key(key, 'user', 'password1')
-        settings.should have_key('user')
+        expect(settings).to have_key('user')
       end
     end
 
     it 'should be false if the key does exists' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        settings.should_not have_key('missing')
+        expect(settings).to_not have_key('missing')
       end
     end
   end
@@ -82,7 +84,7 @@ describe Trustworthy::Settings do
   describe 'recoverable?' do
     it 'should not be recoverable with no user keys' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        settings.should_not be_recoverable
+        expect(settings).to_not be_recoverable
       end
     end
 
@@ -90,7 +92,7 @@ describe Trustworthy::Settings do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
         key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
         settings.add_key(key, 'user', 'password')
-        settings.should_not be_recoverable
+        expect(settings).to_not be_recoverable
       end
     end
 
@@ -100,7 +102,7 @@ describe Trustworthy::Settings do
         key2 = Trustworthy::Key.new(BigDecimal.new('3'), BigDecimal.new('4'))
         settings.add_key(key1, 'user1', 'password')
         settings.add_key(key2, 'user2', 'password')
-        settings.should be_recoverable
+        expect(settings).to be_recoverable
       end
     end
   end
@@ -111,8 +113,8 @@ describe Trustworthy::Settings do
         key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
         settings.add_key(key, 'user', 'password1')
         unlocked_key = settings.unlock_key('user', 'password1')
-        unlocked_key.x.should == BigDecimal.new('2')
-        unlocked_key.y.should == BigDecimal.new('3')
+        expect(unlocked_key.x).to eq(BigDecimal.new('2'))
+        expect(unlocked_key.y).to eq(BigDecimal.new('3'))
       end
     end
   end

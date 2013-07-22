@@ -5,15 +5,15 @@ describe Trustworthy::Key do
     it 'should create a key along the slope and intercept' do
       Trustworthy::Random.stub(:number).and_return(BigDecimal.new('10'))
       key = Trustworthy::Key.create(6, 24)
-      key.y.should == 84
+      expect(key.y).to eq(84)
     end
   end
 
   describe 'self.create_from_string' do
     it 'should create a key from the string representation' do
       key = Trustworthy::Key.create_from_string('4.0,5.0')
-      key.x.should == BigDecimal.new('4.0')
-      key.y.should == BigDecimal.new('5.0')
+      expect(key.x).to eq(BigDecimal.new('4.0'))
+      expect(key.y).to eq(BigDecimal.new('5.0'))
     end
   end
 
@@ -22,7 +22,7 @@ describe Trustworthy::Key do
       x = BigDecimal.new('4')
       y = BigDecimal.new('5')
       key = Trustworthy::Key.new(x, y)
-      key.to_s.should == '4.0,5.0'
+      expect(key.to_s).to eq('4.0,5.0')
     end
   end
 end
