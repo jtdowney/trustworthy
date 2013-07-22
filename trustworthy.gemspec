@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'aead', '~> 1.6'
   s.add_dependency 'highline', '~> 1.6'
   s.add_dependency 'hkdf', '~> 0.2.0'
-  s.add_dependency 'scrypt', '~> 1.1'
+  s.add_dependency 'scrypt', '~> 1.1.0'
   s.add_development_dependency 'test-construct', '1.2.0'
   s.add_development_dependency 'rspec', '2.14.1'
   s.add_development_dependency 'rake', '10.1.0'
