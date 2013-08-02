@@ -5,7 +5,15 @@ module Trustworthy
       include Trustworthy::CLI::Crypt
 
       def self._command
-        'encrypt'
+        'encrypt filename'
+      end
+
+      def parse_options(args)
+        options = super(args)
+        unless options.has_key?(:output_file)
+          options[:output_file] = "#{options[:input_file]}.tw"
+        end
+        options
       end
 
       def _transform(prompt, options, input_file)

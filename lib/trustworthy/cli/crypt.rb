@@ -6,15 +6,13 @@ module Trustworthy
       end
 
       def parse_options(args)
-        super(_command, args) do |opts, options|
-          opts.on('-i', '--input FILE', "File to #{_command}") do |file|
-            options[:input_file] = file
-          end
-
+        options = super(_command, args) do |opts, options|
           opts.on('-o', '--output FILE', "File to write #{_command}ed contents to") do |file|
             options[:output_file] = file
           end
         end
+        options[:input_file] = args.shift
+        options
       end
 
       def run(args)
@@ -33,7 +31,7 @@ module Trustworthy
 
       def _check_options(args)
         options = parse_options(args)
-        unless options.has_key?(:input_file) && options.has_key?(:output_file)
+        unless options[:input_file] && options[:output_file]
           print_help
           throw :error
         end

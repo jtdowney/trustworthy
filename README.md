@@ -20,13 +20,13 @@ The master key will be loaded so that a new user key can be added to the configu
 
 ### Encrypt a file
 
-    trustworthy encrypt -i foo.txt -o foo.txt.tw
+    trustworthy encrypt foo.txt
 
 The master key will be loaded and then used to encrypt the file specified.
 
 ### Decrypt a file
 
-    trustworthy decrypt -i foo.txt.tw -o foo.txt
+    trustworthy decrypt foo.txt.tw
 
 Decrypting works similar to encrypting, first the master key will be loaded and then used to decrypt the file.
 

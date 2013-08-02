@@ -10,6 +10,7 @@ describe Trustworthy::CLI::Encrypt do
     within_construct do |construct|
       construct.file(TestValues::SettingsFile)
       construct.file('input.txt', TestValues::Plaintext)
+      construct.file('input.txt.tw')
       construct.file('output.txt')
       create_config(TestValues::SettingsFile)
       example.run
@@ -24,11 +25,14 @@ describe Trustworthy::CLI::Encrypt do
         'user2',
         'password2'
       ) do
-        Trustworthy::CLI::Encrypt.new.run(['-i', 'input.txt', '-o', 'output.txt'])
+        Trustworthy::CLI::Encrypt.new.run(['input.txt'])
       end
 
-      ciphertext = File.read('output.txt')
+      ciphertext = File.read('input.txt.tw')
       expect(ciphertext).to eq(TestValues::EncryptedFile)
+
+      ciphertext = File.read('output.txt')
+      expect(ciphertext).to be_empty
     end
 
     it 'should require an input file' do
@@ -44,17 +48,21 @@ describe Trustworthy::CLI::Encrypt do
       end
     end
 
-    it 'should require an output file' do
+    it 'should allow a named output file' do
       HighLine::Simulate.with(
         'user1',
         'password1',
         'user2',
         'password2'
       ) do
-        encrypt = Trustworthy::CLI::Encrypt.new
-        expect(encrypt).to receive(:print_help)
-        encrypt.run(['-i', 'input.txt'])
+        Trustworthy::CLI::Encrypt.new.run(['input.txt', '-o', 'output.txt'])
       end
+
+      ciphertext = File.read('output.txt')
+      expect(ciphertext).to eq(TestValues::EncryptedFile)
+
+      ciphertext = File.read('input.txt.tw')
+      expect(ciphertext).to be_empty
     end
   end
 end
