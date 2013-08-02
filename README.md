@@ -44,6 +44,7 @@ The configuration uses ruby's `YAML::Store` to provide a simple transactional da
 
 ## Reference
 
+* Introducing Trustworthy - [http://jtdowney.com/blog/2013/08/01/introducing-trustworthy/](http://jtdowney.com/blog/2013/08/01/introducing-trustworthy/)
 * RSA Labs - [http://www.rsa.com/rsalabs/node.asp?id=2259](http://www.rsa.com/rsalabs/node.asp?id=2259)
 * ssss - [http://point-at-infinity.org/ssss/](http://point-at-infinity.org/ssss/)
 * Secret sharing on Wikipedia - [http://en.wikipedia.org/wiki/Secret_sharing](http://en.wikipedia.org/wiki/Secret_sharing)
