@@ -9,8 +9,6 @@ require 'trustworthy/cli/decrypt'
 require 'trustworthy/cli/encrypt'
 require 'trustworthy/prompt'
 
-HighLine.color_scheme = HighLine::SampleColorScheme.new
-
 module Trustworthy
   class CLI
     include Trustworthy::CLI::Command

@@ -1,3 +1,5 @@
+HighLine.color_scheme = HighLine::SampleColorScheme.new
+
 module Trustworthy
   class Prompt
     def initialize(config_file, terminal = HighLine.new)
