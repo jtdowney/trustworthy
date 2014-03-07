@@ -15,7 +15,7 @@ module Trustworthy
     end
 
     def self._source
-      '/dev/random'
+      '/dev/urandom'
     end
   end
 end
