@@ -7,6 +7,7 @@ require 'trustworthy/cli/add_key'
 require 'trustworthy/cli/init'
 require 'trustworthy/cli/decrypt'
 require 'trustworthy/cli/encrypt'
+require 'trustworthy/cli/passwd'
 require 'trustworthy/prompt'
 
 module Trustworthy
@@ -17,7 +18,8 @@ module Trustworthy
       'add-key' => Trustworthy::CLI::AddKey,
       'init'    => Trustworthy::CLI::Init,
       'decrypt' => Trustworthy::CLI::Decrypt,
-      'encrypt' => Trustworthy::CLI::Encrypt
+      'encrypt' => Trustworthy::CLI::Encrypt,
+      'passwd'  => Trustworthy::CLI::Passwd,
     }
 
     def self.banner

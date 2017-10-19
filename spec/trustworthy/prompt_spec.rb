@@ -155,4 +155,54 @@ describe Trustworthy::Prompt do
       end
     end
   end
+
+  describe 'change_user_password' do
+    it 'should prompt for the existing password and then a new password' do
+      old_settings = YAML.load_file(TestValues::SettingsFile)
+      HighLine::Simulate.with(
+        'user1',
+        'password1',
+        'password2',
+        'password2',
+      ) do
+        prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
+        prompt.change_user_password
+      end
+
+      new_settings = YAML.load_file(TestValues::SettingsFile)
+      expect(old_settings['user1']['encrypted_point']).to_not eq(new_settings['user1']['encrypted_point'])
+    end
+
+    it 'should prompt for the correct password' do
+      HighLine::Simulate.with(
+        'user1',
+        'bad_password',
+        'password1',
+        'password2',
+        'password2',
+      ) do
+        prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
+        expect(prompt).to receive(:_error).with('Password incorrect for user1')
+        prompt.change_user_password
+      end
+    end
+
+    it 'should prompt for the existing password and then a new password' do
+      old_settings = YAML.load_file(TestValues::SettingsFile)
+      HighLine::Simulate.with(
+        'user1',
+        'password1',
+        'password2',
+        'password3',
+        'password2',
+        'password2',
+      ) do
+        prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
+        prompt.change_user_password
+      end
+
+      new_settings = YAML.load_file(TestValues::SettingsFile)
+      expect(old_settings['user1']['encrypted_point']).to_not eq(new_settings['user1']['encrypted_point'])
+    end
+  end
 end

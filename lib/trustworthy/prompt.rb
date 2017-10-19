@@ -34,6 +34,25 @@ module Trustworthy
       end
     end
 
+    def change_user_password
+      Trustworthy::Settings.open(@config_file) do |settings|
+        username, key = _unlock_key(settings, [])
+
+        loop do
+          password = _ask_password('Password: ')
+          password_confirm = _ask_password('Password (again): ')
+          if password == password_confirm
+            settings.add_key(key, username, password)
+            break
+          else
+            _error('Passwords do not match.')
+          end
+        end
+
+        username
+      end
+    end
+
     def unlock_master_key
       usernames_in_use = []
       Trustworthy::Settings.open(@config_file) do |settings|
