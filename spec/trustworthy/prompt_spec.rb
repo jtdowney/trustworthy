@@ -4,7 +4,7 @@ describe Trustworthy::Prompt do
   let(:test_key) { Trustworthy::Key.new(BigDecimal.new('1'), BigDecimal.new('2')) }
 
   before(:each) do
-    $terminal.stub(:say)
+    allow($terminal).to receive(:say)
   end
 
   around(:each) do |example|

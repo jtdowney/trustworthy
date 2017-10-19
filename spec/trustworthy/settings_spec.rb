@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Trustworthy::Settings do
   before(:each) do
-    SCrypt::Engine.stub(:generate_salt).and_return(TestValues::Salt)
-    AEAD::Cipher::AES_256_CBC_HMAC_SHA_256.stub(:generate_nonce).and_return(TestValues::InitializationVector)
+    allow(SCrypt::Engine).to receive(:generate_salt).and_return(TestValues::Salt)
+    allow(AEAD::Cipher::AES_256_CBC_HMAC_SHA_256).to receive(:generate_nonce).and_return(TestValues::InitializationVector)
   end
 
   around(:each) do |example|
@@ -44,7 +44,7 @@ describe Trustworthy::Settings do
           settings.add_key(key, 'missing', 'password')
           raise 'boom'
         end
-      end.to raise_error
+      end.to raise_error(RuntimeError)
 
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
         missing_key = settings.find_key('missing')

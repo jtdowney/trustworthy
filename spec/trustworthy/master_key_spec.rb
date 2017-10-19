@@ -30,7 +30,8 @@ describe Trustworthy::MasterKey do
 
   describe 'self.create' do
     it 'should generate a random slope and intercept' do
-      Trustworthy::Random.stub(:number).and_return(BigDecimal.new('10'))
+      allow(Trustworthy::Random).to receive(:number).and_return(BigDecimal.new('10'))
+
       master_key = Trustworthy::MasterKey.create
       key = master_key.create_key
       expect(key.x).to eq(10)
@@ -40,7 +41,7 @@ describe Trustworthy::MasterKey do
 
   describe 'self.create_from_keys' do
     it 'should calculate the slope and intercept given two keys' do
-      Trustworthy::Random.stub(:number).and_return(BigDecimal.new('10'))
+      allow(Trustworthy::Random).to receive(:number).and_return(BigDecimal.new('10'))
 
       key1 = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('30'))
       key2 = Trustworthy::Key.new(BigDecimal.new('5'), BigDecimal.new('60'))
@@ -63,7 +64,8 @@ describe Trustworthy::MasterKey do
 
   describe 'encrypt' do
     it 'should encrypt and sign the data using the intercept' do
-      AEAD::Cipher::AES_256_CBC_HMAC_SHA_256.stub(:generate_nonce).and_return(TestValues::InitializationVector)
+      allow(AEAD::Cipher::AES_256_CBC_HMAC_SHA_256).to receive(:generate_nonce).and_return(TestValues::InitializationVector)
+
       master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
       ciphertext = master_key.encrypt(TestValues::Plaintext)
       expect(ciphertext).to eq(TestValues::Ciphertext)

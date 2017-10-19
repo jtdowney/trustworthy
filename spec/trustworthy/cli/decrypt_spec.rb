@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Trustworthy::CLI::Decrypt do
   before(:each) do
-    $terminal.stub(:say)
+    allow($terminal).to receive(:say)
   end
 
   around(:each) do |example|

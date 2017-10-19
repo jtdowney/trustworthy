@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Trustworthy::CLI::Encrypt do
   before(:each) do
-    $terminal.stub(:say)
-    AEAD::Cipher::AES_256_CBC_HMAC_SHA_256.stub(:generate_nonce).and_return(TestValues::InitializationVector)
+    allow($terminal).to receive(:say)
+    allow(AEAD::Cipher::AES_256_CBC_HMAC_SHA_256).to receive(:generate_nonce).and_return(TestValues::InitializationVector)
   end
 
   around(:each) do |example|

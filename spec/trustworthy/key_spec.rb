@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Trustworthy::Key do
   describe 'self.create' do
     it 'should create a key along the slope and intercept' do
-      Trustworthy::Random.stub(:number).and_return(BigDecimal.new('10'))
+      allow(Trustworthy::Random).to receive(:number).and_return(BigDecimal.new('10'))
       key = Trustworthy::Key.create(6, 24)
       expect(key.y).to eq(84)
     end
