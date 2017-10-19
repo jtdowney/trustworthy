@@ -16,7 +16,7 @@ module Trustworthy
     def add_key(key, username, password)
       salt = SCrypt::Engine.generate_salt
       encrypted_point = _encrypt(key.to_s, salt, password)
-      @store[username] = {'salt' => salt, 'encrypted_point' => encrypted_point}
+      @store[username] = {'salt' => salt, 'encrypted_point' => encrypted_point, 'timestamp' => DateTime.now.iso8601}
     end
 
     def empty?

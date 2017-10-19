@@ -1,6 +1,7 @@
 require 'trustworthy'
 require 'trustworthy/cli'
 require 'construct'
+require 'timecop'
 require 'highline/simulate'
 
 RSpec.configure do |config|

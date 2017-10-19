@@ -1,6 +1,7 @@
 require 'aead'
 require 'base64'
 require 'bigdecimal'
+require 'date'
 require 'highline'
 require 'hkdf'
 require 'scrypt'

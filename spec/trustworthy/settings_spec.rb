@@ -15,15 +15,19 @@ describe Trustworthy::Settings do
 
   describe 'self.open' do
     it 'should read and write the key information to a file' do
-      Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
-        settings.add_key(key, 'user', 'password1')
-      end
+      Timecop.freeze(DateTime.new(2017, 10, 19, 9, 0, 0, 0)) do
+        Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
+          key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+          settings.add_key(key, 'user', 'password1')
+        end
 
-      Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        found_key = settings.find_key('user')
-        expect(found_key['salt']).to eq(TestValues::Salt)
-        expect(found_key['encrypted_point']).to eq(TestValues::EncryptedPoint)
+        Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
+          found_key = settings.find_key('user')
+          timestamp = DateTime.parse(found_key['timestamp'])
+          expect(found_key['salt']).to eq(TestValues::Salt)
+          expect(found_key['encrypted_point']).to eq(TestValues::EncryptedPoint)
+          expect(timestamp).to eq(DateTime.new(2017, 10, 19, 9, 0, 0, 0))
+        end
       end
     end
 
