@@ -99,7 +99,7 @@ describe Trustworthy::Prompt do
       end
     end
 
-    it 'should required an existing user for the first key' do
+    it 'should require an existing user for the first key' do
       HighLine::Simulate.with(
         'missing',
         'user1',
@@ -113,7 +113,7 @@ describe Trustworthy::Prompt do
       end
     end
 
-    it 'should required an existing user for the second key' do
+    it 'should require an existing user for the second key' do
       HighLine::Simulate.with(
         'user1',
         'password1',
