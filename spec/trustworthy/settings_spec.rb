@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Trustworthy::Settings do
   before(:each) do
-    allow(SCrypt::Engine).to receive(:generate_salt).and_return(TestValues::Salt)
     allow(AEAD::Cipher::AES_256_CBC_HMAC_SHA_256).to receive(:generate_nonce).and_return(TestValues::InitializationVector)
   end
 

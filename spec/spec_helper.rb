@@ -4,11 +4,6 @@ require 'test_construct'
 require 'timecop'
 require 'highline/simulate'
 
-RSpec.configure do |config|
-  config.order = 'random'
-  config.include TestConstruct::Helpers
-end
-
 module TestValues
   SettingsFile = 'trustworthy.yml'
   InitializationVector = ['39164ec082fb8b7336d3c5500af99dcb'].pack('H*')
@@ -25,6 +20,14 @@ ORZOwIL7i3M208VQCvmdyw==--o39ZYHOC+HotoUiBqeHqvSOWXUbXwaZRsMkwzQ
 7nVtk1jWftqroCoi6QITaiqQlTZywpN7DLqsAWeSKRhXipjA==
 -----END TRUSTWORTHY ENCRYPTED FILE-----
 EOF
+end
+
+RSpec.configure do |config|
+  config.order = 'random'
+  config.include TestConstruct::Helpers
+  config.before(:each) do
+    allow(SCrypt::Engine).to receive(:generate_salt).and_return(TestValues::Salt)
+  end
 end
 
 def create_config(filename)
