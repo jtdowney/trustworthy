@@ -1,12 +1,12 @@
 require 'trustworthy'
 require 'trustworthy/cli'
-require 'construct'
+require 'test_construct'
 require 'timecop'
 require 'highline/simulate'
 
 RSpec.configure do |config|
   config.order = 'random'
-  config.include Construct::Helpers
+  config.include TestConstruct::Helpers
 end
 
 module TestValues

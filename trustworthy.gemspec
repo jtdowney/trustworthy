@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'highline', '~> 1.7'
   s.add_dependency 'hkdf', '~> 0.3.0'
   s.add_dependency 'scrypt', '~> 3.0'
-  s.add_development_dependency 'test-construct', '1.2.2'
+  s.add_development_dependency 'test_construct', '2.0.1'
   s.add_development_dependency 'timecop', '0.9.1'
   s.add_development_dependency 'rspec', '3.7.0'
   s.add_development_dependency 'rake', '12.1.0'
