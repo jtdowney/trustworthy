@@ -16,7 +16,7 @@ describe Trustworthy::Settings do
     it 'should read and write the key information to a file' do
       Timecop.freeze(DateTime.new(2017, 10, 19, 9, 0, 0, 0)) do
         Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-          key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+          key = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('3'))
           settings.add_key(key, 'user', 'password1')
         end
 
@@ -32,13 +32,13 @@ describe Trustworthy::Settings do
 
     it 'should preserve the contents if an exception is raised' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+        key = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('3'))
         settings.add_key(key, 'user', 'password1')
       end
 
       expect do
         Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-          key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+          key = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('3'))
           settings.add_key(key, 'user', 'password2')
           settings.add_key(key, 'missing', 'password')
           raise 'boom'
@@ -57,9 +57,9 @@ describe Trustworthy::Settings do
   end
 
   describe 'add_key' do
-    it 'should encrypt the key with the password' do |settings|
+    it 'should encrypt the key with the password' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+        key = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('3'))
         settings.add_key(key, 'user', 'password1')
         found_key = settings.find_key('user')
         expect(found_key['salt']).to eq(TestValues::Salt)
@@ -71,15 +71,15 @@ describe Trustworthy::Settings do
   describe 'has_key?' do
     it 'should be true if the key exists' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+        key = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('3'))
         settings.add_key(key, 'user', 'password1')
-        expect(settings).to have_key('user')
+        expect(settings.key?('user')).to be_truthy
       end
     end
 
     it 'should be false if the key does exists' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        expect(settings).to_not have_key('missing')
+        expect(settings.key?('missing')).to_not be_truthy
       end
     end
   end
@@ -93,7 +93,7 @@ describe Trustworthy::Settings do
 
     it 'should not be recoverable with one user key' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+        key = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('3'))
         settings.add_key(key, 'user', 'password')
         expect(settings).to_not be_recoverable
       end
@@ -101,8 +101,8 @@ describe Trustworthy::Settings do
 
     it 'should be recoverable with two or more user keys' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        key1 = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
-        key2 = Trustworthy::Key.new(BigDecimal.new('3'), BigDecimal.new('4'))
+        key1 = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('3'))
+        key2 = Trustworthy::Key.new(BigDecimal('3'), BigDecimal('4'))
         settings.add_key(key1, 'user1', 'password')
         settings.add_key(key2, 'user2', 'password')
         expect(settings).to be_recoverable
@@ -113,11 +113,11 @@ describe Trustworthy::Settings do
   describe 'unlock_key' do
     it 'should decrypt the key with the password' do
       Trustworthy::Settings.open(TestValues::SettingsFile) do |settings|
-        key = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('3'))
+        key = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('3'))
         settings.add_key(key, 'user', 'password1')
         unlocked_key = settings.unlock_key('user', 'password1')
-        expect(unlocked_key.x).to eq(BigDecimal.new('2'))
-        expect(unlocked_key.y).to eq(BigDecimal.new('3'))
+        expect(unlocked_key.x).to eq(BigDecimal('2'))
+        expect(unlocked_key.y).to eq(BigDecimal('3'))
       end
     end
   end

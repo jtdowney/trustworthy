@@ -9,7 +9,7 @@ describe Trustworthy::Random do
 
     it 'should return a number up to a given byte size' do
       random = Trustworthy::Random.number(2)
-      expect(random).to be <= 2 ** 16
+      expect(random).to be <= 2**16
     end
   end
 

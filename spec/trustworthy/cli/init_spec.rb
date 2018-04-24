@@ -26,7 +26,7 @@ describe Trustworthy::CLI::Init do
         'P@ssw0rd1',
         'user2',
         'P@ssw0rd2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         Trustworthy::CLI::Init.new.run([])
       end
@@ -47,7 +47,7 @@ describe Trustworthy::CLI::Init do
           'P@ssw0rd1',
           'user2',
           'P@ssw0rd2',
-          'P@ssw0rd2',
+          'P@ssw0rd2'
         ) do
           Trustworthy::CLI::Init.new.run(['-c', filename])
         end
@@ -69,7 +69,7 @@ describe Trustworthy::CLI::Init do
         'P@ssw0rd2',
         'user3',
         'P@ssw0rd3',
-        'P@ssw0rd3',
+        'P@ssw0rd3'
       ) do
         Trustworthy::CLI::Init.new.run(['-k', '3'])
       end

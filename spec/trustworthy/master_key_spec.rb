@@ -30,7 +30,7 @@ describe Trustworthy::MasterKey do
 
   describe 'self.create' do
     it 'should generate a random slope and intercept' do
-      allow(Trustworthy::Random).to receive(:number).and_return(BigDecimal.new('10'))
+      allow(Trustworthy::Random).to receive(:number).and_return(BigDecimal('10'))
 
       master_key = Trustworthy::MasterKey.create
       key = master_key.create_key
@@ -41,10 +41,10 @@ describe Trustworthy::MasterKey do
 
   describe 'self.create_from_keys' do
     it 'should calculate the slope and intercept given two keys' do
-      allow(Trustworthy::Random).to receive(:number).and_return(BigDecimal.new('10'))
+      allow(Trustworthy::Random).to receive(:number).and_return(BigDecimal('10'))
 
-      key1 = Trustworthy::Key.new(BigDecimal.new('2'), BigDecimal.new('30'))
-      key2 = Trustworthy::Key.new(BigDecimal.new('5'), BigDecimal.new('60'))
+      key1 = Trustworthy::Key.new(BigDecimal('2'), BigDecimal('30'))
+      key2 = Trustworthy::Key.new(BigDecimal('5'), BigDecimal('60'))
 
       master_key = Trustworthy::MasterKey.create_from_keys(key1, key2)
       new_key = master_key.create_key
@@ -55,7 +55,7 @@ describe Trustworthy::MasterKey do
 
   describe 'create_key' do
     it 'should define a new key' do
-      master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
+      master_key = Trustworthy::MasterKey.new(BigDecimal('6'), BigDecimal('24'))
       key = master_key.create_key
       expect(key.x).to_not eq(0)
       expect(key.y).to_not eq(0)
@@ -66,7 +66,7 @@ describe Trustworthy::MasterKey do
     it 'should encrypt and sign the data using the intercept' do
       allow(AEAD::Cipher::AES_256_CBC_HMAC_SHA_256).to receive(:generate_nonce).and_return(TestValues::InitializationVector)
 
-      master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
+      master_key = Trustworthy::MasterKey.new(BigDecimal('6'), BigDecimal('24'))
       ciphertext = master_key.encrypt(TestValues::Plaintext)
       expect(ciphertext).to eq(TestValues::Ciphertext)
     end
@@ -74,17 +74,16 @@ describe Trustworthy::MasterKey do
 
   describe 'decrypt' do
     it 'should decrypt and verify the data using the intercept' do
-      master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
+      master_key = Trustworthy::MasterKey.new(BigDecimal('6'), BigDecimal('24'))
       plaintext = master_key.decrypt(TestValues::Ciphertext)
       expect(plaintext).to eq(TestValues::Plaintext)
     end
 
     it 'should raise an invalid signature error if signatures do not match' do
-      master_key = Trustworthy::MasterKey.new(BigDecimal.new('6'), BigDecimal.new('24'))
+      master_key = Trustworthy::MasterKey.new(BigDecimal('6'), BigDecimal('24'))
       ciphertext = TestValues::Ciphertext.dup
       ciphertext[0] = ciphertext[0].next
       expect { master_key.decrypt(ciphertext) }.to raise_error(ArgumentError, 'ciphertext failed authentication step')
     end
   end
 end
-

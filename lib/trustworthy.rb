@@ -16,11 +16,11 @@ require 'trustworthy/settings'
 require 'trustworthy/version'
 
 module Trustworthy
-  CipherAlgorithm = 'AES-256-CBC-HMAC-SHA-256'
+  CipherAlgorithm = 'AES-256-CBC-HMAC-SHA-256'.freeze
   Cipher = AEAD::Cipher.new(CipherAlgorithm)
   SCryptParams = {
-    :max_time => 5,
-    :max_memfrac => 0.75,
-    :max_mem => 16 * 1024 * 1024,
-  }
+    max_time: 5,
+    max_memfrac: 0.75,
+    max_mem: 16 * 1024 * 1024
+  }.freeze
 end

@@ -6,9 +6,9 @@ module Trustworthy
       end
 
       def parse_options(args)
-        options = super(_command, args) do |opts, options|
+        options = super(_command, args) do |opts, inner_options|
           opts.on('-o', '--output FILE', "File to write #{_command}ed contents to") do |file|
-            options[:output_file] = file
+            inner_options[:output_file] = file
           end
         end
         options[:input_file] = args.shift

@@ -10,7 +10,7 @@ module Trustworthy
 
       def parse_options(args)
         options = super(args)
-        if options[:input_file].to_s.end_with?('.tw') && !options.has_key?(:output_file)
+        if options[:input_file].to_s.end_with?('.tw') && !options.key?(:output_file)
           options[:output_file] = File.basename(options[:input_file], '.tw')
         end
         options
@@ -34,10 +34,10 @@ module Trustworthy
       end
 
       def _strip_ciphertext(ciphertext)
-        ciphertext.
-          gsub(/-+(BEGIN|END) TRUSTWORTHY ENCRYPTED FILE-+/, '').
-          gsub(/^Version: .*$/, '').
-          gsub("\n", '')
+        ciphertext
+          .gsub(/-+(BEGIN|END) TRUSTWORTHY ENCRYPTED FILE-+/, '')
+          .gsub(/^Version: .*$/, '')
+          .delete("\n")
       end
     end
   end

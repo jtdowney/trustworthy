@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Trustworthy::Prompt do
-  let(:test_key) { Trustworthy::Key.new(BigDecimal.new('1'), BigDecimal.new('2')) }
+  let(:test_key) { Trustworthy::Key.new(BigDecimal('1'), BigDecimal('2')) }
 
   before(:each) do
     allow($terminal).to receive(:say)
@@ -20,7 +20,7 @@ describe Trustworthy::Prompt do
       HighLine::Simulate.with(
         'user3',
         'P@ssw0rd',
-        'P@ssw0rd',
+        'P@ssw0rd'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         username = prompt.add_user_key(test_key)
@@ -34,7 +34,7 @@ describe Trustworthy::Prompt do
         'P@ssw0rd1',
         'P@ssw0rd1',
         'P@ssw0rd2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         username = prompt.add_user_key(test_key)
@@ -49,7 +49,7 @@ describe Trustworthy::Prompt do
         'user1',
         'user3',
         'P@ssw0rd',
-        'P@ssw0rd',
+        'P@ssw0rd'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Key user1 is already in use')
@@ -65,7 +65,7 @@ describe Trustworthy::Prompt do
         'user3',
         'password',
         'P@ssw0rd',
-        'P@ssw0rd',
+        'P@ssw0rd'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Password is too weak')
@@ -106,7 +106,7 @@ describe Trustworthy::Prompt do
         'P@ssw0rd1',
         'user1',
         'user2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Key user1 is already in use')
@@ -120,7 +120,7 @@ describe Trustworthy::Prompt do
         'user1',
         'P@ssw0rd1',
         'user2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Key missing does not exist')
@@ -134,7 +134,7 @@ describe Trustworthy::Prompt do
         'P@ssw0rd1',
         'missing',
         'user2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Key missing does not exist')
@@ -148,7 +148,7 @@ describe Trustworthy::Prompt do
         'bad_password',
         'P@ssw0rd1',
         'user2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Password incorrect for user1')
@@ -162,7 +162,7 @@ describe Trustworthy::Prompt do
         'P@ssw0rd1',
         'user2',
         'bad_password',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Password incorrect for user2')
@@ -178,7 +178,7 @@ describe Trustworthy::Prompt do
         'user1',
         'P@ssw0rd1',
         'P@ssw0rd2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         prompt.change_user_password
@@ -194,7 +194,7 @@ describe Trustworthy::Prompt do
         'bad_password',
         'P@ssw0rd1',
         'P@ssw0rd2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Password incorrect for user1')
@@ -210,7 +210,7 @@ describe Trustworthy::Prompt do
         'P@ssw0rd2',
         'P@ssw0rd3',
         'P@ssw0rd2',
-        'P@ssw0rd2',
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         prompt.change_user_password

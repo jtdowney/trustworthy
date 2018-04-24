@@ -8,7 +8,7 @@ module Trustworthy
       end
 
       def default_options
-        { :keys => 2 }.merge(super)
+        {keys: 2}.merge(super)
       end
 
       def parse_options(args)
@@ -19,6 +19,7 @@ module Trustworthy
         end
       end
 
+      # rubocop:disable Metrics/AbcSize
       def run(args)
         options = parse_options(args)
 
@@ -30,7 +31,7 @@ module Trustworthy
         Trustworthy::Settings.open(options[:config_file]) do |settings|
           unless settings.empty?
             say("Config #{options[:config_file]} already exists")
-            return
+            return # rubocop:disable Lint/NonLocalExitFromIterator
           end
         end
 

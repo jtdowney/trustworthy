@@ -32,7 +32,7 @@ module Trustworthy
       ciphertext = _cipher.encrypt(nonce, '', plaintext)
 
       [nonce, ciphertext].map do |field|
-        Base64.encode64(field).gsub("\n", '')
+        Base64.strict_encode64(field)
       end.join('--')
     end
 

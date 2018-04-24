@@ -9,7 +9,7 @@ module Trustworthy
     end
 
     def self.create_from_string(str)
-      x, y = str.split(',').map { |n| BigDecimal.new(n) }
+      x, y = str.split(',').map { |n| BigDecimal(n) }
       Trustworthy::Key.new(x, y)
     end
 

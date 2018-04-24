@@ -10,7 +10,7 @@ module Trustworthy
 
       def parse_options(args)
         options = super(args)
-        unless options.has_key?(:output_file)
+        unless options.key?(:output_file)
           options[:output_file] = "#{options[:input_file]}.tw"
         end
         options

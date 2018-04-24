@@ -27,7 +27,7 @@ module Trustworthy
       @store[username]
     end
 
-    def has_key?(username)
+    def key?(username)
       @store.root?(username)
     end
 
@@ -62,7 +62,7 @@ module Trustworthy
       nonce = Trustworthy::Cipher.generate_nonce
       ciphertext = cipher.encrypt(nonce, '', plaintext)
       [nonce, ciphertext].map do |field|
-        Base64.encode64(field).gsub("\n", '')
+        Base64.strict_encode64(field)
       end.join('--')
     end
   end

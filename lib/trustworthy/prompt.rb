@@ -12,11 +12,8 @@ module Trustworthy
         username = nil
         loop do
           username = _ask('Username: ')
-          if settings.has_key?(username)
-            _error("Key #{username} is already in use")
-          else
-            break
-          end
+          break unless settings.key?(username)
+          _error("Key #{username} is already in use")
         end
 
         loop do
@@ -61,7 +58,7 @@ module Trustworthy
         username1, key1 = _unlock_key(settings, usernames_in_use)
         usernames_in_use << username1
 
-        username2, key2 = _unlock_key(settings, usernames_in_use)
+        _, key2 = _unlock_key(settings, usernames_in_use)
 
         master_key = Trustworthy::MasterKey.create_from_keys(key1, key2)
         _say('Reconstructed master key')
@@ -70,7 +67,7 @@ module Trustworthy
       end
     end
 
-    def _unlock_key(settings, usernames_in_use)
+    def _unlock_key(settings, usernames_in_use) # rubocop:disable Metrics/MethodLength
       username = nil
       loop do
         username = _ask('Username: ')
@@ -108,11 +105,8 @@ module Trustworthy
     def _ask_password_with_strength_requirements(question)
       loop do
         password = @terminal.ask(question) { |q| q.echo = false }.to_s
-        if _strong_password?(password)
-          return password
-        else
-          _error("Password is too weak")
-        end
+        return password if _strong_password?(password)
+        _error('Password is too weak')
       end
     end
 

@@ -19,8 +19,8 @@ module Trustworthy
       'init'    => Trustworthy::CLI::Init,
       'decrypt' => Trustworthy::CLI::Decrypt,
       'encrypt' => Trustworthy::CLI::Encrypt,
-      'passwd'  => Trustworthy::CLI::Passwd,
-    }
+      'passwd'  => Trustworthy::CLI::Passwd
+    }.freeze
 
     def self.banner
       "Trustworthy CLI v#{Trustworthy::VERSION}"
@@ -28,7 +28,7 @@ module Trustworthy
 
     def run(args)
       command = args.shift
-      if Commands.has_key?(command)
+      if Commands.key?(command)
         klass = Commands[command]
         klass.new.run(args)
       else
@@ -40,7 +40,7 @@ module Trustworthy
       say("#{Trustworthy::CLI.banner}\n\n")
       say('Commands:')
       Commands.each do |name, klass|
-        say('  %-8s %s' % [name, klass.description])
+        say(format('  %-8s %s', name, klass.description))
       end
       say("\nSee 'trustworthy <command> --help' for more information on a specific command")
     end

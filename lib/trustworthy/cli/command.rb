@@ -2,7 +2,7 @@ module Trustworthy
   class CLI
     module Command
       def default_options
-        { :config_file => 'trustworthy.yml' }
+        {config_file: 'trustworthy.yml'}
       end
 
       def parse_options(command, args)
@@ -27,9 +27,7 @@ module Trustworthy
       end
 
       def print_help
-        if @parser
-          puts @parser
-        end
+        puts @parser if @parser
       end
 
       def say(message)

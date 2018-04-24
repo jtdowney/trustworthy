@@ -1,0 +1,41 @@
+AllCops:
+  TargetRubyVersion: 2.0
+  Include:
+    - Gemfile
+    - Rakefile
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Metrics/BlockLength:
+  ExcludedMethods:
+    - describe
+    - task
+
+Metrics/ClassLength:
+  Max: 110
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/LineLength:
+  Max: 160
+
+Security/YAMLLoad:
+  Exclude:
+    - spec/**/*.rb
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+
+Style/IfUnlessModifier:
+  Enabled: false
