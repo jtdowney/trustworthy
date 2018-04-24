@@ -22,6 +22,10 @@ ORZOwIL7i3M208VQCvmdyw==--o39ZYHOC+HotoUiBqeHqvSOWXUbXwaZRsMkwzQ
 EOF
 end
 
+SCrypt::Engine::DEFAULTS.merge!(
+  :cost => '400$8$1b$'
+)
+
 RSpec.configure do |config|
   config.order = 'random'
   config.include TestConstruct::Helpers
