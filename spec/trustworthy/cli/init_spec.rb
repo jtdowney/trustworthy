@@ -22,11 +22,11 @@ describe Trustworthy::CLI::Init do
     it 'should write a settings file' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
-        'password1',
+        'P@ssw0rd1',
+        'P@ssw0rd1',
         'user2',
-        'password2',
-        'password2'
+        'P@ssw0rd2',
+        'P@ssw0rd2',
       ) do
         Trustworthy::CLI::Init.new.run([])
       end
@@ -43,11 +43,11 @@ describe Trustworthy::CLI::Init do
         construct.file(filename)
         HighLine::Simulate.with(
           'user1',
-          'password1',
-          'password1',
+          'P@ssw0rd1',
+          'P@ssw0rd1',
           'user2',
-          'password2',
-          'password2'
+          'P@ssw0rd2',
+          'P@ssw0rd2',
         ) do
           Trustworthy::CLI::Init.new.run(['-c', filename])
         end
@@ -62,14 +62,14 @@ describe Trustworthy::CLI::Init do
     it 'should generate the specified number of keys' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
-        'password1',
+        'P@ssw0rd1',
+        'P@ssw0rd1',
         'user2',
-        'password2',
-        'password2',
+        'P@ssw0rd2',
+        'P@ssw0rd2',
         'user3',
-        'password3',
-        'password3'
+        'P@ssw0rd3',
+        'P@ssw0rd3',
       ) do
         Trustworthy::CLI::Init.new.run(['-k', '3'])
       end

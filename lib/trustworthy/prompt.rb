@@ -20,7 +20,7 @@ module Trustworthy
         end
 
         loop do
-          password = _ask_password('Password: ')
+          password = _ask_password_with_strength_requirements('Password: ')
           password_confirm = _ask_password('Password (again): ')
           if password == password_confirm
             settings.add_key(key, username, password)
@@ -39,7 +39,7 @@ module Trustworthy
         username, key = _unlock_key(settings, [])
 
         loop do
-          password = _ask_password('Password: ')
+          password = _ask_password_with_strength_requirements('Password: ')
           password_confirm = _ask_password('Password (again): ')
           if password == password_confirm
             settings.add_key(key, username, password)
@@ -105,8 +105,27 @@ module Trustworthy
       @terminal.ask(question) { |q| q.echo = false }.to_s
     end
 
+    def _ask_password_with_strength_requirements(question)
+      loop do
+        password = @terminal.ask(question) { |q| q.echo = false }.to_s
+        if _strong_password?(password)
+          return password
+        else
+          _error("Password is too weak")
+        end
+      end
+    end
+
     def _say(message)
       @terminal.say(message)
+    end
+
+    def _strong_password?(password)
+      return false unless password =~ /.{8,}/
+      return false unless password =~ /[0-9]/
+      return false unless password =~ /[A-Za-z]/
+      return false unless password =~ /\W/
+      true
     end
 
     def _error(message)

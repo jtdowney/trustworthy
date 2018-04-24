@@ -20,9 +20,9 @@ describe Trustworthy::CLI::Decrypt do
     it 'should unlock the master key and decrypt the file' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user2',
-        'password2'
+        'P@ssw0rd2'
       ) do
         Trustworthy::CLI::Decrypt.new.run(['input.txt.tw'])
       end
@@ -35,37 +35,23 @@ describe Trustworthy::CLI::Decrypt do
     end
 
     it 'should require an input file' do
-      HighLine::Simulate.with(
-        'user1',
-        'password1',
-        'user2',
-        'password2'
-      ) do
-        decrypt = Trustworthy::CLI::Decrypt.new
-        expect(decrypt).to receive(:print_help)
-        decrypt.run([])
-      end
+      decrypt = Trustworthy::CLI::Decrypt.new
+      expect(decrypt).to receive(:print_help)
+      decrypt.run([])
     end
 
     it 'should require an output file if input does not end in .tw' do
-      HighLine::Simulate.with(
-        'user1',
-        'password1',
-        'user2',
-        'password2'
-      ) do
-        decrypt = Trustworthy::CLI::Decrypt.new
-        expect(decrypt).to receive(:print_help)
-        decrypt.run(['input.txt'])
-      end
+      decrypt = Trustworthy::CLI::Decrypt.new
+      expect(decrypt).to receive(:print_help)
+      decrypt.run(['input.txt'])
     end
 
     it 'should take an optional output file' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user2',
-        'password2'
+        'P@ssw0rd2'
       ) do
         Trustworthy::CLI::Decrypt.new.run(['input.txt.tw', '-o', 'output.txt'])
       end

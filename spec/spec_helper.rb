@@ -36,7 +36,7 @@ end
 
 def create_config(filename)
   Trustworthy::Settings.open(filename) do |settings|
-    settings.add_key(TestValues::MasterKey.create_key, 'user1', 'password1')
-    settings.add_key(TestValues::MasterKey.create_key, 'user2', 'password2')
+    settings.add_key(TestValues::MasterKey.create_key, 'user1', 'P@ssw0rd1')
+    settings.add_key(TestValues::MasterKey.create_key, 'user2', 'P@ssw0rd2')
   end
 end

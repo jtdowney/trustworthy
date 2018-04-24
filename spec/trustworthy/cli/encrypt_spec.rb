@@ -21,9 +21,9 @@ describe Trustworthy::CLI::Encrypt do
     it 'should unlock the master key and encrypt the file' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user2',
-        'password2'
+        'P@ssw0rd2'
       ) do
         Trustworthy::CLI::Encrypt.new.run(['input.txt'])
       end
@@ -36,24 +36,17 @@ describe Trustworthy::CLI::Encrypt do
     end
 
     it 'should require an input file' do
-      HighLine::Simulate.with(
-        'user1',
-        'password1',
-        'user2',
-        'password2'
-      ) do
-        encrypt = Trustworthy::CLI::Encrypt.new
-        expect(encrypt).to receive(:print_help)
-        encrypt.run([])
-      end
+      encrypt = Trustworthy::CLI::Encrypt.new
+      expect(encrypt).to receive(:print_help)
+      encrypt.run([])
     end
 
     it 'should allow a named output file' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user2',
-        'password2'
+        'P@ssw0rd2'
       ) do
         Trustworthy::CLI::Encrypt.new.run(['input.txt', '-o', 'output.txt'])
       end

@@ -19,8 +19,8 @@ describe Trustworthy::Prompt do
     it 'should prompt for two user keys' do
       HighLine::Simulate.with(
         'user3',
-        'password',
-        'password'
+        'P@ssw0rd',
+        'P@ssw0rd',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         username = prompt.add_user_key(test_key)
@@ -31,10 +31,10 @@ describe Trustworthy::Prompt do
     it 'should confirm passwords' do
       HighLine::Simulate.with(
         'user3',
-        'password1',
-        'password2',
-        'password1',
-        'password1'
+        'P@ssw0rd1',
+        'P@ssw0rd1',
+        'P@ssw0rd2',
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         username = prompt.add_user_key(test_key)
@@ -48,13 +48,28 @@ describe Trustworthy::Prompt do
       HighLine::Simulate.with(
         'user1',
         'user3',
-        'password',
-        'password'
+        'P@ssw0rd',
+        'P@ssw0rd',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Key user1 is already in use')
         username = prompt.add_user_key(test_key)
         expect(username).to eq('user3')
+      end
+    end
+
+    it 'should enforce strong passwords' do
+      create_config(TestValues::SettingsFile)
+
+      HighLine::Simulate.with(
+        'user3',
+        'password',
+        'P@ssw0rd',
+        'P@ssw0rd',
+      ) do
+        prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
+        expect(prompt).to receive(:_error).with('Password is too weak')
+        prompt.add_user_key(test_key)
       end
     end
   end
@@ -63,9 +78,9 @@ describe Trustworthy::Prompt do
     it 'should prompt for two user keys' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user2',
-        'password2'
+        'P@ssw0rd2'
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         master_key = prompt.unlock_master_key
@@ -88,10 +103,10 @@ describe Trustworthy::Prompt do
     it 'should require two distinct keys to unlock' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user1',
         'user2',
-        'password2'
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Key user1 is already in use')
@@ -103,9 +118,9 @@ describe Trustworthy::Prompt do
       HighLine::Simulate.with(
         'missing',
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user2',
-        'password2'
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Key missing does not exist')
@@ -116,10 +131,10 @@ describe Trustworthy::Prompt do
     it 'should require an existing user for the second key' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'missing',
         'user2',
-        'password2'
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Key missing does not exist')
@@ -131,9 +146,9 @@ describe Trustworthy::Prompt do
       HighLine::Simulate.with(
         'user1',
         'bad_password',
-        'password1',
+        'P@ssw0rd1',
         'user2',
-        'password2'
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Password incorrect for user1')
@@ -144,10 +159,10 @@ describe Trustworthy::Prompt do
     it 'should prompt for the correct password for the second key' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user2',
         'bad_password',
-        'password2'
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Password incorrect for user2')
@@ -161,9 +176,9 @@ describe Trustworthy::Prompt do
       old_settings = YAML.load_file(TestValues::SettingsFile)
       HighLine::Simulate.with(
         'user1',
-        'password1',
-        'password2',
-        'password2',
+        'P@ssw0rd1',
+        'P@ssw0rd2',
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         prompt.change_user_password
@@ -177,9 +192,9 @@ describe Trustworthy::Prompt do
       HighLine::Simulate.with(
         'user1',
         'bad_password',
-        'password1',
-        'password2',
-        'password2',
+        'P@ssw0rd1',
+        'P@ssw0rd2',
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         expect(prompt).to receive(:_error).with('Password incorrect for user1')
@@ -191,11 +206,11 @@ describe Trustworthy::Prompt do
       old_settings = YAML.load_file(TestValues::SettingsFile)
       HighLine::Simulate.with(
         'user1',
-        'password1',
-        'password2',
-        'password3',
-        'password2',
-        'password2',
+        'P@ssw0rd1',
+        'P@ssw0rd2',
+        'P@ssw0rd3',
+        'P@ssw0rd2',
+        'P@ssw0rd2',
       ) do
         prompt = Trustworthy::Prompt.new(TestValues::SettingsFile, $terminal)
         prompt.change_user_password

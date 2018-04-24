@@ -17,12 +17,12 @@ describe Trustworthy::CLI::AddKey do
     it 'should add a new user' do
       HighLine::Simulate.with(
         'user1',
-        'password1',
+        'P@ssw0rd1',
         'user2',
-        'password2',
+        'P@ssw0rd2',
         'user3',
-        'password3',
-        'password3'
+        'P@ssw0rd3',
+        'P@ssw0rd3'
       ) do
         Trustworthy::CLI::AddKey.new.run([])
       end
