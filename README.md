@@ -1,4 +1,4 @@
-# Trustworthy [![Build Status](https://secure.travis-ci.org/jtdowney/trustworthy.svg?branch=master)](http://travis-ci.org/jtdowney/trustworthy)
+# Trustworthy [![Build Status](https://secure.travis-ci.org/jtdowney/trustworthy.svg?branch=main)](http://travis-ci.org/jtdowney/trustworthy)
 
 Implements a special case (k = 2) of [Adi Shamir's](http://en.wikipedia.org/wiki/Adi_Shamir) [secret sharing algorithm](http://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing). This allows secret files to be encrypted on disk and require two secret holders to decrypt it.
 
